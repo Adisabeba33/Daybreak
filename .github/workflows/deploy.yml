@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/daybreak-planning-app-wxe0cx]
+    branches: [main]
   workflow_dispatch:
 
 # Permissions the deploy-pages action needs.

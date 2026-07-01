@@ -1,5 +1,6 @@
 import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
+import { VoiceCapture } from "../components/VoiceCapture";
 import type { Task } from "../types";
 
 interface Props {
@@ -10,17 +11,22 @@ interface Props {
   onStart: () => void;
 }
 
-/** Morning: "What's today?" — fast entry + carried-over tasks. */
+/**
+ * Morning: voice-first. A big "Say a task" button turns each spoken phrase into
+ * a card; a text field is the fallback. Carried-over tasks show up too. When
+ * the plan is set, "Start the day" moves to the checklist.
+ */
 export function MorningView({ tasks, onAdd, onToggle, onRemove, onStart }: Props) {
   const carried = tasks.filter((t) => t.carriedFromPlanId).length;
   return (
     <section className="view morning">
       <header className="view-head">
         <h1>What's today?</h1>
-        <p className="subtitle">Jot down what matters. Keep it small.</p>
+        <p className="subtitle">Say your tasks — each becomes a card.</p>
       </header>
 
-      <TaskInput onAdd={onAdd} autoFocus placeholder="e.g. Ship the report" />
+      <VoiceCapture onAdd={onAdd} />
+      <TaskInput onAdd={onAdd} placeholder="…or type a task" />
 
       {carried > 0 && (
         <p className="carried-note">↩ {carried} carried over from yesterday</p>

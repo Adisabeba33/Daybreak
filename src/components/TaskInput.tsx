@@ -26,6 +26,8 @@ export function TaskInput({ onAdd, autoFocus, placeholder }: Props) {
   });
 
   const submit = () => {
+    // Pressing + / Enter also turns the mic off.
+    if (listening) stop();
     const trimmed = text.trim();
     if (!trimmed) return;
     onAdd(trimmed);

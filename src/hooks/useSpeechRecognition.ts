@@ -56,11 +56,17 @@ function getRecognitionCtor(): SpeechRecognitionConstructor | null {
 interface Options {
   /** BCP-47 language tag, e.g. "ru-RU", "en-US". */
   lang: string;
-  /** Called once per finalized utterance with the trimmed transcript. */
+  /** Called once per finalized phrase with the trimmed transcript. */
   onResult: (transcript: string) => void;
+  /**
+   * Keep listening across pauses so several spoken phrases in one session each
+   * fire `onResult` separately (voice-first "say your tasks" flow). Default:
+   * single utterance then stop (the small inline mic).
+   */
+  continuous?: boolean;
 }
 
-export function useSpeechRecognition({ lang, onResult }: Options) {
+export function useSpeechRecognition({ lang, onResult, continuous = false }: Options) {
   const [supported] = useState(() => getRecognitionCtor() !== null);
   const [listening, setListening] = useState(false);
   const [interim, setInterim] = useState("");
@@ -82,24 +88,23 @@ export function useSpeechRecognition({ lang, onResult }: Options) {
 
     const rec = new Ctor();
     rec.lang = langRef.current;
-    rec.continuous = false;
+    rec.continuous = continuous;
     rec.interimResults = true;
 
     rec.onresult = (e) => {
       let interimText = "";
-      let finalText = "";
       for (let i = e.resultIndex; i < e.results.length; i += 1) {
         const res = e.results[i];
         const t = res[0].transcript;
-        if (res.isFinal) finalText += t;
-        else interimText += t;
+        if (res.isFinal) {
+          // Emit each finalized phrase separately so it becomes its own card.
+          const trimmed = t.trim();
+          if (trimmed) onResultRef.current(trimmed);
+        } else {
+          interimText += t;
+        }
       }
-      if (finalText.trim()) {
-        onResultRef.current(finalText.trim());
-        setInterim("");
-      } else {
-        setInterim(interimText);
-      }
+      setInterim(interimText);
     };
 
     const finish = () => {

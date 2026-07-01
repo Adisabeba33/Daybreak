@@ -90,6 +90,38 @@
   color: var(--ink-soft);
 }
 
+/* Voice-first capture button */
+.voice-capture {
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  padding: 22px 18px;
+  background: linear-gradient(135deg, var(--sunrise-2), var(--sunrise-3));
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 8px 24px rgba(255, 138, 92, 0.35);
+}
+.voice-capture .vc-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.voice-capture .vc-text {
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-align: center;
+}
+.voice-capture .vc-hint {
+  font-size: 0.8rem;
+  opacity: 0.92;
+}
+.voice-capture.listening {
+  animation: mic-pulse 1.2s ease-in-out infinite;
+}
+
 /* Task input */
 .task-input {
   display: flex;

@@ -29,6 +29,25 @@
   padding: 4px 12px;
   font-weight: 700;
 }
+.top-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.install {
+  border: none;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.install.ios {
+  font-size: 0.78rem;
+}
 
 /* View cards */
 .view {

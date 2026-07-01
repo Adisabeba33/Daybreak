@@ -3,6 +3,7 @@ import { usePlan } from "./hooks/usePlan";
 import { phaseForHour, type DayPhase } from "./lib/date";
 import { effectiveStreak } from "./lib/plan";
 import { StreakBadge } from "./components/StreakBadge";
+import { InstallButton } from "./components/InstallButton";
 import { MorningView } from "./views/MorningView";
 import { DayView } from "./views/DayView";
 import { EveningView } from "./views/EveningView";
@@ -26,7 +27,10 @@ export default function App() {
     <div className="app">
       <nav className="top">
         <span className="brand">Daybreak 🌅</span>
-        <StreakBadge streak={streak} />
+        <div className="top-actions">
+          <InstallButton />
+          <StreakBadge streak={streak} />
+        </div>
       </nav>
 
       {phase === "morning" && (

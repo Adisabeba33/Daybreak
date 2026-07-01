@@ -1,15 +1,19 @@
 /*
  * Daybreak service worker.
  *
- * Phase 1: makes the app installable and usable offline. Strategy:
- *  - navigations (HTML)  → network-first, fall back to cache (never serve a
- *    stale app shell while online; still works with no connection)
- *  - same-origin assets  → stale-while-revalidate (instant, refreshed in bg)
+ * Phase 1: installable + offline-capable, and — importantly — self-updating so
+ * the installed PWA doesn't get stuck on an old build.
+ *   - navigations (HTML)  → network-first with `cache: "reload"` so the freshly
+ *     deployed index.html always wins over any HTTP cache; falls back to cache
+ *     only when offline.
+ *   - hashed assets       → stale-while-revalidate (instant, refreshed in bg).
+ * On activate we drop old caches and take control immediately (skipWaiting +
+ * clients.claim); the page reloads once when the new worker takes over (see
+ * src/pwa.ts). Bump CACHE on breaking changes to force a clean sweep.
  *
- * Phase 2 will add a `push` handler here to show reminder notifications
- * delivered via Web Push — the registration below is the foundation for it.
+ * Phase 2 will add a `push` handler here for reminder notifications.
  */
-const CACHE = "daybreak-v1";
+const CACHE = "daybreak-v2";
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -34,7 +38,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       (async () => {
         try {
-          const net = await fetch(request);
+          const net = await fetch(request, { cache: "reload" });
           const cache = await caches.open(CACHE);
           cache.put(request, net.clone());
           return net;

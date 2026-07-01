@@ -40,16 +40,16 @@ export function BrandIcon(props: SVGProps<SVGSVGElement>) {
         </linearGradient>
       </defs>
       <rect width="24" height="24" rx="6" fill="url(#brand-grad)" />
-      <circle cx="12" cy="12.2" r="3" fill="#fff" />
-      <g stroke="#fff" strokeWidth="1.4" strokeLinecap="round">
-        <line x1="12" y1="4.7" x2="12" y2="6.2" />
-        <line x1="12" y1="18.2" x2="12" y2="19.7" />
-        <line x1="4.7" y1="12.2" x2="6.2" y2="12.2" />
-        <line x1="17.8" y1="12.2" x2="19.3" y2="12.2" />
-        <line x1="7" y1="7.2" x2="8.1" y2="8.3" />
-        <line x1="15.9" y1="16.1" x2="17" y2="17.2" />
-        <line x1="17" y1="7.2" x2="15.9" y2="8.3" />
-        <line x1="8.1" y1="16.1" x2="7" y2="17.2" />
+      <circle cx="12" cy="12" r="3.4" fill="#fff" />
+      <g stroke="#fff" strokeWidth="1.8" strokeLinecap="round">
+        <line x1="12" y1="4.2" x2="12" y2="6" />
+        <line x1="12" y1="18" x2="12" y2="19.8" />
+        <line x1="4.2" y1="12" x2="6" y2="12" />
+        <line x1="18" y1="12" x2="19.8" y2="12" />
+        <line x1="6.6" y1="6.6" x2="7.9" y2="7.9" />
+        <line x1="16.1" y1="16.1" x2="17.4" y2="17.4" />
+        <line x1="17.4" y1="6.6" x2="16.1" y2="7.9" />
+        <line x1="7.9" y1="16.1" x2="6.6" y2="17.4" />
       </g>
     </svg>
   );
@@ -135,14 +135,14 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
 
 export function FlameIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" {...props}>
+    <svg width={19} height={19} viewBox="0 0 24 24" {...props}>
       <path
-        fill="#f1913d"
-        d="M13 2.5c.5 2.4-.6 3.8-1.9 5.1C9.5 9.1 8 10.6 8 13.2 8 16.9 9.9 19.6 12 19.6s4-2.7 4-6.4c0-1.4-.4-2.7-1.1-3.8-.4.9-1 1.5-1.7 1.7.8-3.1-.2-6.2-2.2-8.6z"
+        fill="#ef7f2e"
+        d="M12.7 1.8c.7 3.1-1 4.9-2.7 6.6C8.1 10.1 6.3 12 6.3 14.8 6.3 18.6 9 21.4 12 21.4s5.7-2.8 5.7-6.6c0-2-.8-3.8-1.9-5.2-.4 1.4-1.3 2.2-2.3 2.5 1.1-3.5-.3-7-1.8-10.3z"
       />
       <path
-        fill="#ffb454"
-        d="M12 20c-1.7 0-3-1.4-3-3.2 0-1.5 1-2.5 1.6-3.3.3.9.8 1.3 1.4 1.5-.3-1.6.5-2.8 1.1-3.5.5 1.8 1.9 2.6 1.9 4.8C16 18.6 14.7 20 12 20z"
+        fill="#ffc062"
+        d="M12 21.4c-2.2 0-4.1-1.8-4.1-4.1 0-2 1.3-3.2 2.1-4.3.4 1.1 1 1.7 1.8 1.9-.4-2 .6-3.6 1.4-4.5.7 2.3 2.4 3.3 2.4 6 0 3-1.5 5-3.6 5z"
       />
     </svg>
   );

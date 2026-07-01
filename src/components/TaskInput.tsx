@@ -5,6 +5,8 @@ interface Props {
   onAdd: (text: string) => void;
   autoFocus?: boolean;
   placeholder?: string;
+  /** Show the inline dictation mic. Off on the capture screen (big button covers voice). */
+  showMic?: boolean;
 }
 
 /**
@@ -16,7 +18,7 @@ interface Props {
  * device language, and the transcript lands in the same field so the user can
  * review/fix it before adding — recognition isn't perfect, so we don't auto-add.
  */
-export function TaskInput({ onAdd, autoFocus, placeholder }: Props) {
+export function TaskInput({ onAdd, autoFocus, placeholder, showMic = true }: Props) {
   const [text, setText] = useState("");
 
   const { supported, listening, interim, start, stop } = useSpeechRecognition({
@@ -55,7 +57,7 @@ export function TaskInput({ onAdd, autoFocus, placeholder }: Props) {
         onChange={(e) => setText(e.target.value)}
         aria-label="New task"
       />
-      {supported && (
+      {showMic && supported && (
         <button
           type="button"
           className={listening ? "mic listening" : "mic"}

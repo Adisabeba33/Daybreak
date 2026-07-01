@@ -26,7 +26,7 @@ export function MorningView({ tasks, onAdd, onToggle, onRemove, onStart }: Props
       </header>
 
       <VoiceCapture onAdd={onAdd} count={tasks.length} />
-      <TaskInput onAdd={onAdd} placeholder="…or type a task" />
+      <TaskInput onAdd={onAdd} placeholder="…or type a task" showMic={false} />
 
       {carried > 0 && (
         <p className="carried-note">↩ {carried} carried over from yesterday</p>

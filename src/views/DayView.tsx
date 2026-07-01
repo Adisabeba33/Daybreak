@@ -13,14 +13,14 @@ interface Props {
   onWrapUp: () => void;
 }
 
-/** Day: checklist + big progress ring + gentle nudge. */
+/** Day: checklist + big progress ring + a gentle nudge. */
 export function DayView({ tasks, progress, onAdd, onToggle, onRemove, onWrapUp }: Props) {
   return (
-    <section className="view day">
-      <header className="view-head centered">
+    <section className="main-card">
+      <div className="hero centered">
         <ProgressRing progress={progress} />
         <p className="nudge">{dayEncouragement(progress)}</p>
-      </header>
+      </div>
 
       <TaskList tasks={tasks} onToggle={onToggle} onRemove={onRemove} />
       <TaskInput onAdd={onAdd} placeholder="Add one more…" />

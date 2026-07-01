@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 
 interface Props {
   onAdd: (text: string) => void;
@@ -10,11 +11,19 @@ interface Props {
  * Quick task entry. Enter (or the + button) adds and keeps focus so several
  * tasks can be typed in a row — the "2-3 taps" morning flow from the brief.
  *
- * Voice input is a Phase 2 add-on: on supporting browsers this maps straight
- * onto the same onAdd, so nothing downstream changes.
+ * Voice input uses the browser Web Speech API via useSpeechRecognition: the mic
+ * button appears only where the browser supports it, dictation follows the
+ * device language, and the transcript lands in the same field so the user can
+ * review/fix it before adding — recognition isn't perfect, so we don't auto-add.
  */
 export function TaskInput({ onAdd, autoFocus, placeholder }: Props) {
   const [text, setText] = useState("");
+
+  const { supported, listening, interim, start, stop } = useSpeechRecognition({
+    lang: typeof navigator !== "undefined" ? navigator.language : "en-US",
+    onResult: (transcript) =>
+      setText((prev) => (prev ? `${prev} ${transcript}` : transcript)),
+  });
 
   const submit = () => {
     const trimmed = text.trim();
@@ -22,6 +31,10 @@ export function TaskInput({ onAdd, autoFocus, placeholder }: Props) {
     onAdd(trimmed);
     setText("");
   };
+
+  // While listening, show the live (interim) transcript appended to the field.
+  const displayValue =
+    listening && interim ? (text ? `${text} ${interim}` : interim) : text;
 
   return (
     <form
@@ -33,14 +46,25 @@ export function TaskInput({ onAdd, autoFocus, placeholder }: Props) {
     >
       <input
         type="text"
-        value={text}
+        value={displayValue}
         // eslint-disable-next-line jsx-a11y/no-autofocus
         autoFocus={autoFocus}
-        placeholder={placeholder ?? "Add a task…"}
+        placeholder={listening ? "Listening…" : placeholder ?? "Add a task…"}
         onChange={(e) => setText(e.target.value)}
         aria-label="New task"
       />
-      <button type="submit" aria-label="Add task" disabled={!text.trim()}>
+      {supported && (
+        <button
+          type="button"
+          className={listening ? "mic listening" : "mic"}
+          onClick={listening ? stop : start}
+          aria-label={listening ? "Stop dictation" : "Dictate task"}
+          title={listening ? "Stop" : "Dictate"}
+        >
+          🎤
+        </button>
+      )}
+      <button type="submit" aria-label="Add task" disabled={!displayValue.trim()}>
         +
       </button>
     </form>

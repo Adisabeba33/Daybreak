@@ -98,6 +98,25 @@
   opacity: 0.4;
   cursor: default;
 }
+.task-input .mic {
+  background: #fff;
+  border: 1px solid var(--line);
+  font-size: 1.2rem;
+}
+.task-input .mic.listening {
+  background: var(--accent);
+  border-color: var(--accent);
+  animation: mic-pulse 1.2s ease-in-out infinite;
+}
+@keyframes mic-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 138, 92, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 138, 92, 0);
+  }
+}
 
 /* Task list */
 .tasks {

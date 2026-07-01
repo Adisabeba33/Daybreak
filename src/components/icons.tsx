@@ -30,9 +30,34 @@ export function PlusIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function BrandIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={24} height={24} viewBox="0 0 24 24" {...props}>
+      <defs>
+        <linearGradient id="brand-grad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#FFB66D" />
+          <stop offset="1" stopColor="#FF8D68" />
+        </linearGradient>
+      </defs>
+      <rect width="24" height="24" rx="6" fill="url(#brand-grad)" />
+      <circle cx="12" cy="12.2" r="3" fill="#fff" />
+      <g stroke="#fff" strokeWidth="1.4" strokeLinecap="round">
+        <line x1="12" y1="4.7" x2="12" y2="6.2" />
+        <line x1="12" y1="18.2" x2="12" y2="19.7" />
+        <line x1="4.7" y1="12.2" x2="6.2" y2="12.2" />
+        <line x1="17.8" y1="12.2" x2="19.3" y2="12.2" />
+        <line x1="7" y1="7.2" x2="8.1" y2="8.3" />
+        <line x1="15.9" y1="16.1" x2="17" y2="17.2" />
+        <line x1="17" y1="7.2" x2="15.9" y2="8.3" />
+        <line x1="8.1" y1="16.1" x2="7" y2="17.2" />
+      </g>
+    </svg>
+  );
+}
+
 export function KeyboardIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg width={21} height={21} viewBox="0 0 24 24" {...stroke} strokeWidth={1.6} {...props}>
+    <svg width={19} height={19} viewBox="0 0 24 24" {...stroke} strokeWidth={1.6} {...props}>
       <rect x="2.5" y="6" width="19" height="12" rx="2.6" />
       <line x1="6" y1="10" x2="6" y2="10" />
       <line x1="9" y1="10" x2="9" y2="10" />
@@ -110,7 +135,7 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
 
 export function FlameIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg width={20} height={20} viewBox="0 0 24 24" {...props}>
+    <svg width={18} height={18} viewBox="0 0 24 24" {...props}>
       <path
         fill="#f1913d"
         d="M13 2.5c.5 2.4-.6 3.8-1.9 5.1C9.5 9.1 8 10.6 8 13.2 8 16.9 9.9 19.6 12 19.6s4-2.7 4-6.4c0-1.4-.4-2.7-1.1-3.8-.4.9-1 1.5-1.7 1.7.8-3.1-.2-6.2-2.2-8.6z"

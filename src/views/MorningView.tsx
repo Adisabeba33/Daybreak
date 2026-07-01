@@ -25,7 +25,7 @@ export function MorningView({ tasks, onAdd, onToggle, onRemove, onStart }: Props
         <p className="subtitle">Say your tasks — each becomes a card.</p>
       </header>
 
-      <VoiceCapture onAdd={onAdd} />
+      <VoiceCapture onAdd={onAdd} count={tasks.length} />
       <TaskInput onAdd={onAdd} placeholder="…or type a task" />
 
       {carried > 0 && (

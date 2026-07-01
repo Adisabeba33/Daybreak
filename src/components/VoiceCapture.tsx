@@ -3,15 +3,17 @@ import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 interface Props {
   /** Each finalized spoken phrase is added as a task card. */
   onAdd: (text: string) => void;
+  /** How many tasks are already captured — drives the guided prompts. */
+  count: number;
 }
 
 /**
- * The voice-first entry point: one big button. Tap it, speak your tasks — each
- * phrase you say (separated by a natural pause) instantly becomes a card. Tap
- * again to stop. Renders nothing where the browser has no speech recognition,
- * so the manual text field below stays the fallback.
+ * The voice-first entry point: one big button that guides you through speaking
+ * your plan. Tap it, say a task — it's captured — then it prompts for the next
+ * one; keep going, tap to finish. Renders nothing where the browser has no
+ * speech recognition, so the manual text field stays the fallback.
  */
-export function VoiceCapture({ onAdd }: Props) {
+export function VoiceCapture({ onAdd, count }: Props) {
   const { supported, listening, interim, start, stop } = useSpeechRecognition({
     lang: typeof navigator !== "undefined" ? navigator.language : "en-US",
     continuous: true,
@@ -19,6 +21,18 @@ export function VoiceCapture({ onAdd }: Props) {
   });
 
   if (!supported) return null;
+
+  const title = listening
+    ? interim || (count > 0 ? "Listening… say your next task" : "Listening… say your first task")
+    : count > 0
+      ? "Say your next task"
+      : "Tap and say your first task";
+
+  const hint = listening
+    ? "Tap to finish"
+    : count > 0
+      ? `✓ ${count} captured — tap to add more`
+      : "Each phrase you say becomes a card";
 
   return (
     <button
@@ -30,12 +44,8 @@ export function VoiceCapture({ onAdd }: Props) {
       <span className="vc-icon" aria-hidden>
         🎤
       </span>
-      <span className="vc-text">
-        {listening ? interim || "Listening… say your tasks" : "Say a task"}
-      </span>
-      <span className="vc-hint">
-        {listening ? "Tap to finish" : "Each phrase becomes a card"}
-      </span>
+      <span className="vc-text">{title}</span>
+      <span className="vc-hint">{hint}</span>
     </button>
   );
 }

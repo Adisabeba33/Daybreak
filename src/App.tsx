@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { usePlan } from "./hooks/usePlan";
-import { phaseForHour, type DayPhase } from "./lib/date";
+import type { DayPhase } from "./lib/date";
 import { effectiveStreak } from "./lib/plan";
 import { StreakBadge } from "./components/StreakBadge";
 import { InstallButton } from "./components/InstallButton";
@@ -11,8 +11,9 @@ import "./App.css";
 
 export default function App() {
   const plan = usePlan();
-  // Start on the phase that matches the clock; the user can then navigate.
-  const [phase, setPhase] = useState<DayPhase>(() => phaseForHour(new Date().getHours()));
+  // Always land on the morning capture screen so the first thing the user sees
+  // is the big "say your tasks" button. They can navigate with the bottom tabs.
+  const [phase, setPhase] = useState<DayPhase>("morning");
 
   // When the user lands on / moves to the evening, close out the day so the
   // streak and history reflect it.

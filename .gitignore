@@ -141,3 +141,21 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# --- Daybreak / Vite ---
+dist-ssr
+*.local
+.vite/
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# tsc -b emit from the composite node project (vite.config)
+vite.config.js
+vite.config.d.ts

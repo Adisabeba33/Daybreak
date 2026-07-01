@@ -135,7 +135,7 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
 
 export function FlameIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg width={19} height={19} viewBox="0 0 24 24" {...props}>
+    <svg width={18} height={18} viewBox="0 0 24 24" {...props}>
       <path
         fill="#ef7f2e"
         d="M12.7 1.8c.7 3.1-1 4.9-2.7 6.6C8.1 10.1 6.3 12 6.3 14.8 6.3 18.6 9 21.4 12 21.4s5.7-2.8 5.7-6.6c0-2-.8-3.8-1.9-5.2-.4 1.4-1.3 2.2-2.3 2.5 1.1-3.5-.3-7-1.8-10.3z"

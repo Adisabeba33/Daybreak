@@ -23,6 +23,7 @@ export function AudioPlayer({ audioId, blob, durationSec, compact }: Props) {
   const [playing, setPlaying] = useState(false);
   const [cur, setCur] = useState(0);
   const [len, setLen] = useState(durationSec ?? 0);
+  const [err, setErr] = useState(false);
   const ref = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -47,16 +48,45 @@ export function AudioPlayer({ audioId, blob, durationSec, compact }: Props) {
     };
   }, [audioId, blob]);
 
+  // Force the element to (re)load whenever the source changes. iOS Safari
+  // sometimes ignores a changed `src` attribute without an explicit load().
+  useEffect(() => {
+    setErr(false);
+    setCur(0);
+    setPlaying(false);
+    setLen(durationSec ?? 0);
+    const a = ref.current;
+    if (a && url) {
+      a.muted = false;
+      a.volume = 1;
+      a.load();
+    }
+  }, [url, durationSec]);
+
   const toggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     const a = ref.current;
     if (!a || !url) return;
-    if (playing) a.pause();
-    else void a.play();
+    if (playing) {
+      a.pause();
+      return;
+    }
+    setErr(false);
+    a.muted = false;
+    a.volume = 1;
+    // play() can reject (autoplay policy, decode error). Surface a hint so a
+    // silent phone / unsupported format doesn't look like a broken button.
+    const p = a.play();
+    if (p && typeof p.then === "function") {
+      p.catch(() => setErr(true));
+    }
   };
 
-  const shown = playing || cur > 0 ? cur : len;
-  const pct = len > 0 ? Math.min(100, (cur / len) * 100) : 0;
+  // webm from MediaRecorder often reports duration=Infinity; fall back to the
+  // recorded length so the bar and time are still meaningful.
+  const effLen = len > 0 && Number.isFinite(len) ? len : (durationSec ?? 0);
+  const shown = playing || cur > 0 ? cur : effLen;
+  const pct = effLen > 0 ? Math.min(100, (cur / effLen) * 100) : 0;
 
   return (
     <div className={compact ? "audio compact" : "audio"} onClick={(e) => e.stopPropagation()}>
@@ -64,12 +94,14 @@ export function AudioPlayer({ audioId, blob, durationSec, compact }: Props) {
         ref={ref}
         src={url ?? undefined}
         preload="metadata"
+        playsInline
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onEnded={() => {
           setPlaying(false);
           setCur(0);
         }}
+        onError={() => setErr(true)}
         onTimeUpdate={(e) => setCur(e.currentTarget.currentTime)}
         onLoadedMetadata={(e) => {
           const d = e.currentTarget.duration;
@@ -91,6 +123,9 @@ export function AudioPlayer({ audioId, blob, durationSec, compact }: Props) {
         </div>
       )}
       <span className="audio-time">{fmt(shown)}</span>
+      {err && !compact && (
+        <span className="audio-hint">Нет звука? Проверьте бесшумный режим (кнопка сбоку).</span>
+      )}
     </div>
   );
 }

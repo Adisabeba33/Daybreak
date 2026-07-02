@@ -851,9 +851,10 @@
 .audio {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
-  height: 44px;
-  padding: 0 12px;
+  min-height: 44px;
+  padding: 6px 12px;
   border-radius: 14px;
   background: rgba(240, 162, 62, 0.1);
 }
@@ -899,6 +900,12 @@
   font-size: 12.5px;
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
+}
+.audio-hint {
+  flex-basis: 100%;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--accent-deep);
 }
 .voice-chip {
   gap: 4px;

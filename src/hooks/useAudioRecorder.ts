@@ -56,7 +56,9 @@ export function useAudioRecorder() {
       mrRef.current = mr;
       streamRef.current = stream;
       startedAt.current = performance.now();
-      mr.start();
+      // Timeslice: flush a chunk every second so a short/interrupted recording
+      // still yields a valid, playable file (some engines emit nothing until stop).
+      mr.start(1000);
       setSeconds(0);
       setRecording(true);
       timerRef.current = window.setInterval(() => {

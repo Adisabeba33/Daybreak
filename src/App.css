@@ -776,6 +776,135 @@
   box-shadow: 0 0 0 3px rgba(240, 164, 82, 0.1);
 }
 
+/* Voice note recorder / player */
+.rec-start {
+  width: 100%;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px dashed rgba(185, 121, 54, 0.4);
+  background: rgba(255, 246, 235, 0.6);
+  color: var(--accent-deep);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.rec-row {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  border-radius: 14px;
+  background: rgba(239, 107, 94, 0.08);
+  border: 1px solid rgba(239, 107, 94, 0.28);
+}
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: #ef6b5e;
+  animation: dot-pulse 1000ms ease-in-out infinite;
+}
+.rec-time {
+  flex: 1;
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  color: var(--text-primary);
+}
+.rec-stop {
+  border: none;
+  background: #ef6b5e;
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+.voice-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.voice-row .audio {
+  flex: 1;
+}
+.voice-action {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+/* Audio player */
+.audio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 14px;
+  background: rgba(240, 162, 62, 0.1);
+}
+.audio.compact {
+  height: auto;
+  padding: 0;
+  background: transparent;
+  gap: 6px;
+}
+.audio-play {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding-left: 1px;
+}
+.audio.compact .audio-play {
+  width: 22px;
+  height: 22px;
+}
+.audio-play:disabled {
+  opacity: 0.5;
+}
+.audio-bar {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: rgba(185, 121, 54, 0.22);
+  overflow: hidden;
+}
+.audio-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent-deep);
+}
+.audio-time {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.voice-chip {
+  gap: 4px;
+  color: var(--accent-deep);
+}
+
 /* ---------- Primary / ghost buttons ---------- */
 .primary-cta {
   margin: 30px auto 0;

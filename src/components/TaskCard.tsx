@@ -3,6 +3,7 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "../types";
 import { PRIORITY_COLOR, formatMinutes } from "../lib/taskFormat";
 import { CheckIcon, ClockIcon, GripIcon } from "./icons";
+import { AudioPlayer } from "./AudioPlayer";
 
 interface Props {
   task: Task;
@@ -12,8 +13,8 @@ interface Props {
 
 /**
  * One sortable task card. Big checkbox toggles done; tapping the body opens the
- * editor; the grip handle drags to reorder. Shows priority dot, time chip and a
- * note preview when present.
+ * editor; the grip handle drags to reorder. Shows priority dot, time chip, a
+ * note preview, and a play button for an attached voice note.
  */
 export function TaskCard({ task, onToggle, onOpen }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
@@ -28,7 +29,9 @@ export function TaskCard({ task, onToggle, onOpen }: Props) {
 
   const done = task.status === "done";
   const time = formatMinutes(task.estimateMinutes);
-  const hasMeta = Boolean(time || task.note || task.carriedFromPlanId);
+  const hasMeta = Boolean(time || task.note || task.voiceNoteId || task.carriedFromPlanId);
+
+  const open = () => onOpen(task.id);
 
   return (
     <li ref={setNodeRef} style={style} className={done ? "task-card done" : "task-card"}>
@@ -42,7 +45,18 @@ export function TaskCard({ task, onToggle, onOpen }: Props) {
         {done && <CheckIcon />}
       </button>
 
-      <button type="button" className="task-body" onClick={() => onOpen(task.id)}>
+      <div
+        className="task-body"
+        role="button"
+        tabIndex={0}
+        onClick={open}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            open();
+          }
+        }}
+      >
         <span className="task-title-row">
           {task.priority !== "none" && (
             <span
@@ -55,6 +69,15 @@ export function TaskCard({ task, onToggle, onOpen }: Props) {
         </span>
         {hasMeta && (
           <span className="task-meta">
+            {task.voiceNoteId && (
+              <span className="chip voice-chip">
+                <AudioPlayer
+                  audioId={task.voiceNoteId}
+                  durationSec={task.voiceDurationSec}
+                  compact
+                />
+              </span>
+            )}
             {time && (
               <span className="chip">
                 <ClockIcon />
@@ -69,7 +92,7 @@ export function TaskCard({ task, onToggle, onOpen }: Props) {
             )}
           </span>
         )}
-      </button>
+      </div>
 
       <button
         type="button"

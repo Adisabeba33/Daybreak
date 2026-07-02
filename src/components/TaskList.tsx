@@ -10,6 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import type { Task } from "../types";
+import { deleteAudio } from "../lib/audioStore";
 import { TaskCard } from "./TaskCard";
 import { TaskEditModal } from "./TaskEditModal";
 
@@ -66,6 +67,7 @@ export function TaskList({ tasks, onToggle, onUpdate, onRemove, onReorder }: Pro
             setEditingId(null);
           }}
           onDelete={() => {
+            if (editing.voiceNoteId) deleteAudio(editing.voiceNoteId);
             onRemove(editing.id);
             setEditingId(null);
           }}

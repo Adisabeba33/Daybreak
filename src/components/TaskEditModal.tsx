@@ -1,6 +1,10 @@
 import { useState } from "react";
 import type { Task, TaskPriority } from "../types";
 import { PRIORITY_COLOR, PRIORITY_LABEL } from "../lib/taskFormat";
+import { saveAudio, deleteAudio } from "../lib/audioStore";
+import { useAudioRecorder, recorderSupported } from "../hooks/useAudioRecorder";
+import { AudioPlayer } from "./AudioPlayer";
+import { MicIcon, TrashIcon } from "./icons";
 
 interface Props {
   task: Task;
@@ -11,23 +15,66 @@ interface Props {
 
 const PRIORITIES: TaskPriority[] = ["none", "low", "medium", "high"];
 
-/** Edit everything about a task: title, priority, time estimate, note. */
+function clock(sec: number): string {
+  return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+}
+
+/** Edit a task: title, priority, time estimate, note, and a voice note. */
 export function TaskEditModal({ task, onSave, onDelete, onClose }: Props) {
   const [text, setText] = useState(task.text);
   const [priority, setPriority] = useState<TaskPriority>(task.priority);
   const [mins, setMins] = useState(task.estimateMinutes ? String(task.estimateMinutes) : "");
   const [note, setNote] = useState(task.note ?? "");
+  const [saving, setSaving] = useState(false);
 
-  const save = () => {
+  // Voice note is kept in memory until Save, so cancelling never orphans audio.
+  const [pending, setPending] = useState<{ blob: Blob; duration: number } | null>(null);
+  const [cleared, setCleared] = useState(false);
+  const rec = useAudioRecorder();
+
+  const hasExisting = Boolean(task.voiceNoteId) && !cleared;
+  const hasVoice = Boolean(pending) || hasExisting;
+  const voiceDuration = pending?.duration ?? (hasExisting ? task.voiceDurationSec : undefined);
+
+  const stopRec = async () => {
+    const r = await rec.stop();
+    if (r) {
+      setPending(r);
+      setCleared(false);
+    }
+  };
+  const removeVoice = () => {
+    setPending(null);
+    setCleared(true);
+  };
+
+  const save = async () => {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || saving) return;
     const n = parseInt(mins, 10);
-    onSave({
+    const patch: Partial<Task> = {
       text: trimmed,
       priority,
       estimateMinutes: Number.isFinite(n) && n > 0 ? n : undefined,
       note: note.trim() || undefined,
-    });
+    };
+    setSaving(true);
+    if (pending) {
+      try {
+        const id = await saveAudio(pending.blob);
+        patch.voiceNoteId = id;
+        patch.voiceDurationSec = pending.duration;
+        if (task.voiceNoteId) deleteAudio(task.voiceNoteId);
+      } catch {
+        /* IndexedDB unavailable — keep the text edits, drop the voice note */
+      }
+    } else if (cleared && task.voiceNoteId) {
+      patch.voiceNoteId = undefined;
+      patch.voiceDurationSec = undefined;
+      deleteAudio(task.voiceNoteId);
+    }
+    setSaving(false);
+    onSave(patch);
   };
 
   return (
@@ -64,9 +111,7 @@ export function TaskEditModal({ task, onSave, onDelete, onClose }: Props) {
               >
                 <span
                   className="prio-dot"
-                  style={{
-                    background: p === "none" ? "var(--text-muted)" : PRIORITY_COLOR[p],
-                  }}
+                  style={{ background: p === "none" ? "var(--text-muted)" : PRIORITY_COLOR[p] }}
                   aria-hidden
                 />
                 {PRIORITY_LABEL[p]}
@@ -98,12 +143,61 @@ export function TaskEditModal({ task, onSave, onDelete, onClose }: Props) {
           />
         </div>
 
+        <div className="edit-field">
+          <label>Voice note</label>
+          {rec.recording ? (
+            <div className="rec-row">
+              <span className="rec-dot" aria-hidden />
+              <span className="rec-time">{clock(rec.seconds)}</span>
+              <button type="button" className="rec-stop" onClick={stopRec}>
+                Stop
+              </button>
+            </div>
+          ) : hasVoice ? (
+            <div className="voice-row">
+              <AudioPlayer
+                blob={pending?.blob}
+                audioId={pending ? undefined : task.voiceNoteId}
+                durationSec={voiceDuration}
+              />
+              <button
+                type="button"
+                className="voice-action"
+                onClick={() => void rec.start()}
+                aria-label="Re-record"
+              >
+                <MicIcon />
+              </button>
+              <button
+                type="button"
+                className="voice-action"
+                onClick={removeVoice}
+                aria-label="Delete voice note"
+              >
+                <TrashIcon />
+              </button>
+            </div>
+          ) : recorderSupported ? (
+            <button type="button" className="rec-start" onClick={() => void rec.start()}>
+              <MicIcon /> Record a voice note
+            </button>
+          ) : (
+            <p className="modal-note">Voice recording isn't supported in this browser.</p>
+          )}
+          {rec.error && <p className="modal-note">Microphone access is needed to record.</p>}
+        </div>
+
         <div className="modal-actions">
           <button type="button" className="btn-ghost" onClick={onDelete}>
             Delete
           </button>
-          <button type="button" className="btn-primary" onClick={save} disabled={!text.trim()}>
-            Save
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={save}
+            disabled={!text.trim() || saving}
+          >
+            {saving ? "Saving…" : "Save"}
           </button>
         </div>
       </div>

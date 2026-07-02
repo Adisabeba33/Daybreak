@@ -28,6 +28,10 @@ export interface Task {
   estimateMinutes?: number;
   /** Optional short note / detail (address, sizes, what to buy…). */
   note?: string;
+  /** Id of an attached voice note (stored in IndexedDB via audioStore). */
+  voiceNoteId?: string;
+  /** Duration of the attached voice note, in seconds. */
+  voiceDurationSec?: number;
   /** ISO timestamp of creation. */
   createdAt: string;
   /** ISO timestamp of the last status change to `done`, if any. */

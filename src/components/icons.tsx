@@ -124,6 +124,33 @@ export function CheckIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function PlayIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M8 5.4v13.2a1 1 0 0 0 1.5.86l11-6.6a1 1 0 0 0 0-1.72l-11-6.6A1 1 0 0 0 8 5.4z" />
+    </svg>
+  );
+}
+
+export function PauseIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <rect x="7" y="5.5" width="3.4" height="13" rx="1.1" />
+      <rect x="13.6" y="5.5" width="3.4" height="13" rx="1.1" />
+    </svg>
+  );
+}
+
+export function TrashIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={18} height={18} viewBox="0 0 24 24" {...stroke} strokeWidth={1.7} {...props}>
+      <path d="M4 7h16" />
+      <path d="M9 7V5.6A1.6 1.6 0 0 1 10.6 4h2.8A1.6 1.6 0 0 1 15 5.6V7" />
+      <path d="M6.5 7l.9 11.5A2 2 0 0 0 9.4 20.4h5.2a2 2 0 0 0 2-1.9L17.5 7" />
+    </svg>
+  );
+}
+
 export function ClockIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width={14} height={14} viewBox="0 0 24 24" {...stroke} strokeWidth={1.8} {...props}>

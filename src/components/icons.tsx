@@ -134,16 +134,11 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 export function FlameIcon(props: SVGProps<SVGSVGElement>) {
+  // Single-tone minimal flame (not the two-tone emoji look) — matches the
+  // premium line-icon system. Colour comes from currentColor.
   return (
-    <svg width={18} height={18} viewBox="0 0 24 24" {...props}>
-      <path
-        fill="#ef7f2e"
-        d="M12.7 1.8c.7 3.1-1 4.9-2.7 6.6C8.1 10.1 6.3 12 6.3 14.8 6.3 18.6 9 21.4 12 21.4s5.7-2.8 5.7-6.6c0-2-.8-3.8-1.9-5.2-.4 1.4-1.3 2.2-2.3 2.5 1.1-3.5-.3-7-1.8-10.3z"
-      />
-      <path
-        fill="#ffc062"
-        d="M12 21.4c-2.2 0-4.1-1.8-4.1-4.1 0-2 1.3-3.2 2.1-4.3.4 1.1 1 1.7 1.8 1.9-.4-2 .6-3.6 1.4-4.5.7 2.3 2.4 3.3 2.4 6 0 3-1.5 5-3.6 5z"
-      />
+    <svg width={18} height={18} viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M13.1 2.1c.5 2.7-1 4.4-2.6 5.9-1.7 1.6-3.5 3.5-3.5 6.3 0 3.4 2.5 6 5.4 6s5.3-2.5 5.3-5.9c0-1.9-.7-3.6-1.9-5.1-.4 1.3-1.2 2.2-2.3 2.5 1.2-3.5-.2-7-1.4-9.7zm-1 15.9c-1.5 0-2.6-1.2-2.6-2.7 0-1.3.8-2.2 1.5-3.1.4 1 .9 1.4 1.6 1.6-.4-1.8.6-3 1.2-3.8.5 1.8 1.9 2.6 1.9 4.7 0 1.8-1.4 3.3-3.6 3.3z" />
     </svg>
   );
 }

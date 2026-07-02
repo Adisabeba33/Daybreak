@@ -51,23 +51,30 @@ export interface ParsedTask {
   estimateMinutes?: number;
 }
 
-const SYSTEM = `You turn a person's spoken brain-dump into a clean list of tasks for their day.
+const SYSTEM = `You are the person's morning planning secretary. Turn their spoken brain-dump into a clean, ordered plan for the day.
 - Split the input into distinct, actionable tasks.
 - Rewrite each as a short, clear title in the SAME language the person spoke.
 - Strip filler ("um", "then", "I need to", "надо", "напомни") — keep titles tight.
 - Infer priority from urgency/importance cues; default to "none".
 - If the person mentions how long something takes, set estimateMinutes (in minutes). Otherwise omit it.
+- ORDER the tasks the way they should appear in the plan:
+  * Honor any explicit ordering the person states — "first…", "then…", "most important is…", "put this third", "last…". Position beats priority when they say a position.
+  * Otherwise, order by importance: high priority first, then medium, then low, then none.
+  * Return the array already in that final top-to-bottom order.
 - Never invent tasks that weren't said. Preserve the person's intent.
 Return the result by calling the save_tasks tool.`;
 
 const TOOL: AnthropicNS.Tool = {
   name: "save_tasks",
-  description: "Save the cleaned list of tasks extracted from the user's speech.",
+  description:
+    "Save the cleaned list of tasks extracted from the user's speech, already in the top-to-bottom order they should appear in the day's plan.",
   input_schema: {
     type: "object",
     properties: {
       tasks: {
         type: "array",
+        description:
+          "Tasks in final plan order: honor explicit positions the user stated, otherwise most important first.",
         items: {
           type: "object",
           properties: {

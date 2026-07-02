@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ParsedTask } from "../lib/ai";
+import { PRIORITY_COLOR, PRIORITY_LABEL } from "../lib/taskFormat";
 
 interface Props {
   tasks: ParsedTask[];
@@ -31,11 +32,24 @@ export function TaskReviewModal({ tasks, onConfirm, onCancel }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <h2>Did I get this right?</h2>
-        <p className="modal-lead">Check what I understood, tweak if needed, then add to today.</p>
+        <p className="modal-lead">
+          Here’s your day, ordered. Check it, tweak if needed, then add to today.
+        </p>
 
         <ul className="review-list">
           {items.map((t, i) => (
             <li key={i} className="review-row">
+              <span className="review-num" aria-hidden>
+                {i + 1}
+              </span>
+              {t.priority !== "none" && (
+                <span
+                  className="prio-dot"
+                  style={{ background: PRIORITY_COLOR[t.priority] }}
+                  title={`${PRIORITY_LABEL[t.priority]} priority`}
+                  aria-hidden
+                />
+              )}
               <input
                 value={t.text}
                 onChange={(e) => update(i, e.target.value)}

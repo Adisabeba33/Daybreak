@@ -213,6 +213,22 @@
   align-items: center;
   gap: 8px;
 }
+.review-num {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  background: rgba(80, 60, 45, 0.07);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.review-row .prio-dot {
+  margin-left: -2px;
+}
 .review-row input {
   flex: 1;
   min-width: 0;

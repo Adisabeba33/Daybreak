@@ -185,6 +185,18 @@
   color: var(--text-muted);
 }
 
+/* Small yes/no confirm dialog */
+.modal.confirm {
+  max-width: 340px;
+  text-align: center;
+}
+.confirm-detail {
+  margin: 2px 0 4px;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--text-secondary);
+}
+
 /* Review (confirmation) modal */
 .review-list {
   list-style: none;

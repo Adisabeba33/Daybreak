@@ -8,6 +8,8 @@ import { AudioPlayer } from "./AudioPlayer";
 interface Props {
   task: Task;
   onToggle: (id: string) => void;
+  /** Called when the user checks an unfinished task — parent confirms first. */
+  onRequestComplete: (id: string) => void;
   onOpen: (id: string) => void;
 }
 
@@ -16,7 +18,7 @@ interface Props {
  * editor; the grip handle drags to reorder. Shows priority dot, time chip, a
  * note preview, and a play button for an attached voice note.
  */
-export function TaskCard({ task, onToggle, onOpen }: Props) {
+export function TaskCard({ task, onToggle, onRequestComplete, onOpen }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: task.id });
 
@@ -38,7 +40,7 @@ export function TaskCard({ task, onToggle, onOpen }: Props) {
       <button
         type="button"
         className="task-check"
-        onClick={() => onToggle(task.id)}
+        onClick={() => (done ? onToggle(task.id) : onRequestComplete(task.id))}
         aria-pressed={done}
         aria-label={done ? "Mark not done" : "Mark done"}
       >

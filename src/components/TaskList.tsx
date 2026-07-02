@@ -13,6 +13,7 @@ import type { Task } from "../types";
 import { deleteAudio } from "../lib/audioStore";
 import { TaskCard } from "./TaskCard";
 import { TaskEditModal } from "./TaskEditModal";
+import { ConfirmModal } from "./ConfirmModal";
 
 interface Props {
   tasks: Task[];
@@ -25,6 +26,7 @@ interface Props {
 /** The plan: a drag-to-reorder list of task cards + a tap-to-open editor. */
 export function TaskList({ tasks, onToggle, onUpdate, onRemove, onReorder }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
@@ -36,6 +38,7 @@ export function TaskList({ tasks, onToggle, onUpdate, onRemove, onReorder }: Pro
 
   const ids = tasks.map((t) => t.id);
   const editing = tasks.find((t) => t.id === editingId) ?? null;
+  const confirming = tasks.find((t) => t.id === confirmingId) ?? null;
 
   const onDragEnd = (e: DragEndEvent) => {
     const { active, over } = e;
@@ -52,11 +55,31 @@ export function TaskList({ tasks, onToggle, onUpdate, onRemove, onReorder }: Pro
         <SortableContext items={ids} strategy={verticalListSortingStrategy}>
           <ul className="tasks">
             {tasks.map((task) => (
-              <TaskCard key={task.id} task={task} onToggle={onToggle} onOpen={setEditingId} />
+              <TaskCard
+                key={task.id}
+                task={task}
+                onToggle={onToggle}
+                onRequestComplete={setConfirmingId}
+                onOpen={setEditingId}
+              />
             ))}
           </ul>
         </SortableContext>
       </DndContext>
+
+      {confirming && (
+        <ConfirmModal
+          title="Mark as done?"
+          detail={confirming.text}
+          confirmLabel="Yes, done"
+          cancelLabel="Not yet"
+          onConfirm={() => {
+            onToggle(confirming.id);
+            setConfirmingId(null);
+          }}
+          onCancel={() => setConfirmingId(null)}
+        />
+      )}
 
       {editing && (
         <TaskEditModal

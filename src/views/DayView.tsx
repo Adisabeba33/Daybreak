@@ -9,12 +9,23 @@ interface Props {
   progress: Progress;
   onAdd: (text: string) => void;
   onToggle: (id: string) => void;
+  onUpdate: (id: string, patch: Partial<Task>) => void;
   onRemove: (id: string) => void;
+  onReorder: (orderedIds: string[]) => void;
   onWrapUp: () => void;
 }
 
 /** Day: checklist + big progress ring + a gentle nudge. */
-export function DayView({ tasks, progress, onAdd, onToggle, onRemove, onWrapUp }: Props) {
+export function DayView({
+  tasks,
+  progress,
+  onAdd,
+  onToggle,
+  onUpdate,
+  onRemove,
+  onReorder,
+  onWrapUp,
+}: Props) {
   return (
     <section className="main-card">
       <div className="hero centered">
@@ -22,7 +33,13 @@ export function DayView({ tasks, progress, onAdd, onToggle, onRemove, onWrapUp }
         <p className="nudge">{dayEncouragement(progress)}</p>
       </div>
 
-      <TaskList tasks={tasks} onToggle={onToggle} onRemove={onRemove} />
+      <TaskList
+        tasks={tasks}
+        onToggle={onToggle}
+        onUpdate={onUpdate}
+        onRemove={onRemove}
+        onReorder={onReorder}
+      />
       <TaskInput onAdd={onAdd} placeholder="Add one more…" />
 
       <button type="button" className="ghost" onClick={onWrapUp}>

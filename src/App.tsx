@@ -33,7 +33,9 @@ export default function App() {
             tasks={plan.tasks}
             onAdd={plan.addTask}
             onToggle={plan.toggle}
+            onUpdate={plan.updateTask}
             onRemove={plan.removeTask}
+            onReorder={plan.reorderTasks}
             onStart={() => setPhase("day")}
           />
         )}
@@ -44,7 +46,9 @@ export default function App() {
             progress={plan.progress}
             onAdd={plan.addTask}
             onToggle={plan.toggle}
+            onUpdate={plan.updateTask}
             onRemove={plan.removeTask}
+            onReorder={plan.reorderTasks}
             onWrapUp={() => setPhase("evening")}
           />
         )}

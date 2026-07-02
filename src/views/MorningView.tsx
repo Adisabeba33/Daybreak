@@ -6,9 +6,11 @@ import type { Task } from "../types";
 
 interface Props {
   tasks: Task[];
-  onAdd: (text: string) => void;
+  onAdd: (text: string, priority?: Task["priority"], estimateMinutes?: number) => void;
   onToggle: (id: string) => void;
+  onUpdate: (id: string, patch: Partial<Task>) => void;
   onRemove: (id: string) => void;
+  onReorder: (orderedIds: string[]) => void;
   onStart: () => void;
 }
 
@@ -16,7 +18,15 @@ interface Props {
  * Capture screen: hero → voice panel → manual field → tasks (or empty state).
  * Speaking a phrase adds a card; "Start the day" moves to the checklist.
  */
-export function MorningView({ tasks, onAdd, onToggle, onRemove, onStart }: Props) {
+export function MorningView({
+  tasks,
+  onAdd,
+  onToggle,
+  onUpdate,
+  onRemove,
+  onReorder,
+  onStart,
+}: Props) {
   const carried = tasks.filter((t) => t.carriedFromPlanId).length;
   return (
     <section className="main-card">
@@ -35,7 +45,13 @@ export function MorningView({ tasks, onAdd, onToggle, onRemove, onStart }: Props
       {tasks.length === 0 ? (
         <EmptyState />
       ) : (
-        <TaskList tasks={tasks} onToggle={onToggle} onRemove={onRemove} />
+        <TaskList
+          tasks={tasks}
+          onToggle={onToggle}
+          onUpdate={onUpdate}
+          onRemove={onRemove}
+          onReorder={onReorder}
+        />
       )}
 
       {tasks.length > 0 && (

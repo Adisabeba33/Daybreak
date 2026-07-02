@@ -604,7 +604,7 @@
   border-radius: var(--radius-control);
   background: rgba(255, 255, 255, 0.68);
   border: 1px solid rgba(80, 60, 45, 0.1);
-  padding: 14px 16px;
+  padding: 12px 12px 12px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -621,8 +621,8 @@
   }
 }
 .task-check {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   flex: none;
   border-radius: var(--radius-pill);
   border: 1.5px solid rgba(70, 65, 60, 0.28);
@@ -639,36 +639,141 @@
   background: var(--accent);
   border-color: var(--accent);
 }
-.task-title {
+.task-body {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  padding: 4px 0;
+  text-align: left;
+  cursor: pointer;
   font-family: var(--sans);
+}
+.task-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.prio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  flex: none;
+}
+.task-title {
+  min-width: 0;
   font-size: 16px;
   line-height: 22px;
   color: #302d2c;
-  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .task-card.done .task-title {
   opacity: 0.52;
   text-decoration: line-through;
 }
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  background: rgba(80, 60, 45, 0.06);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+.task-note {
+  font-size: 13px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .task-carried {
   color: var(--text-muted);
   flex: none;
 }
-.task-del {
+.task-grip {
+  flex: none;
   border: none;
   background: transparent;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
+  color: #cbc4be;
+  cursor: grab;
+  padding: 6px 2px;
   display: grid;
   place-items: center;
-  border-radius: 8px;
-  flex: none;
-  transition: transform 120ms ease;
+  touch-action: none;
 }
-.task-del:active {
-  transform: scale(0.9);
+.task-grip:active {
+  cursor: grabbing;
+}
+
+/* Task editor fields */
+.edit-field {
+  margin-top: 14px;
+}
+.edit-field label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.prio-seg {
+  display: flex;
+  gap: 8px;
+}
+.prio-opt {
+  flex: 1;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+.prio-opt.active {
+  border-color: rgba(233, 151, 77, 0.55);
+  background: rgba(240, 164, 82, 0.08);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.note-input {
+  width: 100%;
+  min-height: 76px;
+  resize: vertical;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(90, 70, 55, 0.16);
+  background: #fff;
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--text-primary);
+  outline: none;
+}
+.note-input:focus {
+  border-color: rgba(233, 151, 77, 0.5);
+  box-shadow: 0 0 0 3px rgba(240, 164, 82, 0.1);
 }
 
 /* ---------- Primary / ghost buttons ---------- */

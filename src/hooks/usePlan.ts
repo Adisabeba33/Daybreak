@@ -68,12 +68,37 @@ export function usePlan(now: Date = new Date()) {
   );
 
   const addTask = useCallback(
-    (text: string, priority: TaskPriority = "none") => {
+    (text: string, priority: TaskPriority = "none", estimateMinutes?: number) => {
       const trimmed = text.trim();
       if (!trimmed) return;
-      mutateToday((tasks) => [...tasks, createTask(trimmed, { priority }, now)]);
+      mutateToday((tasks) => [
+        ...tasks,
+        createTask(trimmed, { priority, estimateMinutes }, now),
+      ]);
     },
     [mutateToday, now],
+  );
+
+  /** Patch a task's editable fields (text, priority, estimate, note). */
+  const updateTask = useCallback(
+    (id: string, patch: Partial<Task>) => {
+      mutateToday((tasks) => tasks.map((t) => (t.id === id ? { ...t, ...patch } : t)));
+    },
+    [mutateToday],
+  );
+
+  /** Reorder today's tasks to match the given id order (drag-and-drop). */
+  const reorderTasks = useCallback(
+    (orderedIds: string[]) => {
+      mutateToday((tasks) => {
+        const byId = new Map(tasks.map((t) => [t.id, t]));
+        const next = orderedIds
+          .map((id) => byId.get(id))
+          .filter((t): t is Task => Boolean(t));
+        return next.length === tasks.length ? next : tasks;
+      });
+    },
+    [mutateToday],
   );
 
   const toggle = useCallback(
@@ -127,6 +152,8 @@ export function usePlan(now: Date = new Date()) {
     streak: state.streak,
     history: state.history,
     addTask,
+    updateTask,
+    reorderTasks,
     toggle,
     removeTask,
     reviewDay,

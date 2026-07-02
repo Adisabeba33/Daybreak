@@ -48,6 +48,7 @@ export function useApiKey() {
 export interface ParsedTask {
   text: string;
   priority: TaskPriority;
+  estimateMinutes?: number;
 }
 
 const SYSTEM = `You turn a person's spoken brain-dump into a clean list of tasks for their day.
@@ -55,6 +56,7 @@ const SYSTEM = `You turn a person's spoken brain-dump into a clean list of tasks
 - Rewrite each as a short, clear title in the SAME language the person spoke.
 - Strip filler ("um", "then", "I need to", "надо", "напомни") — keep titles tight.
 - Infer priority from urgency/importance cues; default to "none".
+- If the person mentions how long something takes, set estimateMinutes (in minutes). Otherwise omit it.
 - Never invent tasks that weren't said. Preserve the person's intent.
 Return the result by calling the save_tasks tool.`;
 
@@ -71,6 +73,10 @@ const TOOL: AnthropicNS.Tool = {
           properties: {
             text: { type: "string", description: "Short task title, in the user's language" },
             priority: { type: "string", enum: ["none", "low", "medium", "high"] },
+            estimateMinutes: {
+              type: "integer",
+              description: "Estimated duration in minutes, only if the person mentioned it",
+            },
           },
           required: ["text", "priority"],
         },
@@ -100,14 +106,23 @@ export async function parseTasksFromSpeech(transcript: string): Promise<ParsedTa
 
   const block = res.content.find((b) => b.type === "tool_use");
   if (!block || block.type !== "tool_use") return [];
-  const input = block.input as { tasks?: { text?: string; priority?: string }[] };
+  const input = block.input as {
+    tasks?: { text?: string; priority?: string; estimateMinutes?: number }[];
+  };
 
   return (input.tasks ?? [])
-    .map((t) => ({
-      text: String(t.text ?? "").trim(),
-      priority: PRIORITIES.includes(t.priority as TaskPriority)
-        ? (t.priority as TaskPriority)
-        : "none",
-    }))
+    .map((t) => {
+      const mins =
+        typeof t.estimateMinutes === "number" && t.estimateMinutes > 0
+          ? Math.round(t.estimateMinutes)
+          : undefined;
+      return {
+        text: String(t.text ?? "").trim(),
+        priority: PRIORITIES.includes(t.priority as TaskPriority)
+          ? (t.priority as TaskPriority)
+          : "none",
+        estimateMinutes: mins,
+      };
+    })
     .filter((t) => t.text.length > 0);
 }

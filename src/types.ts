@@ -24,8 +24,10 @@ export interface Task {
   text: string;
   status: TaskStatus;
   priority: TaskPriority;
-  /** Optional self-estimate in minutes. Unused in MVP UI, stored for later. */
+  /** Optional self-estimate in minutes. */
   estimateMinutes?: number;
+  /** Optional short note / detail (address, sizes, what to buy…). */
+  note?: string;
   /** ISO timestamp of creation. */
   createdAt: string;
   /** ISO timestamp of the last status change to `done`, if any. */

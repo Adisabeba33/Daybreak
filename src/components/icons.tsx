@@ -124,6 +124,28 @@ export function CheckIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function ClockIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" {...stroke} strokeWidth={1.8} {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.6V12l3 1.8" />
+    </svg>
+  );
+}
+
+export function GripIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <circle cx="9" cy="6" r="1.5" />
+      <circle cx="15" cy="6" r="1.5" />
+      <circle cx="9" cy="12" r="1.5" />
+      <circle cx="15" cy="12" r="1.5" />
+      <circle cx="9" cy="18" r="1.5" />
+      <circle cx="15" cy="18" r="1.5" />
+    </svg>
+  );
+}
+
 export function CloseIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width={16} height={16} viewBox="0 0 24 24" {...stroke} strokeWidth={1.8} {...props}>

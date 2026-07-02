@@ -1,59 +1,76 @@
+import { useState } from "react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { SortableContext, arrayMove, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import type { Task } from "../types";
-import { CheckIcon, CloseIcon } from "./icons";
+import { TaskCard } from "./TaskCard";
+import { TaskEditModal } from "./TaskEditModal";
 
 interface Props {
   tasks: Task[];
   onToggle: (id: string) => void;
-  onRemove?: (id: string) => void;
+  onUpdate: (id: string, patch: Partial<Task>) => void;
+  onRemove: (id: string) => void;
+  onReorder: (orderedIds: string[]) => void;
 }
 
-/** The plan as a list of soft cards. Tap a row to toggle done. */
-export function TaskList({ tasks, onToggle, onRemove }: Props) {
+/** The plan: a drag-to-reorder list of task cards + a tap-to-open editor. */
+export function TaskList({ tasks, onToggle, onUpdate, onRemove, onReorder }: Props) {
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    // Long-press to start dragging on touch, so normal taps still toggle/edit.
+    useSensor(TouchSensor, { activationConstraint: { delay: 180, tolerance: 8 } }),
+  );
+
   if (tasks.length === 0) return null;
+
+  const ids = tasks.map((t) => t.id);
+  const editing = tasks.find((t) => t.id === editingId) ?? null;
+
+  const onDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+    if (over && active.id !== over.id) {
+      const from = ids.indexOf(String(active.id));
+      const to = ids.indexOf(String(over.id));
+      if (from !== -1 && to !== -1) onReorder(arrayMove(ids, from, to));
+    }
+  };
+
   return (
-    <ul className="tasks">
-      {tasks.map((task) => {
-        const done = task.status === "done";
-        return (
-          <li key={task.id} className={done ? "task-card done" : "task-card"}>
-            <button
-              type="button"
-              className="task-check"
-              onClick={() => onToggle(task.id)}
-              aria-pressed={done}
-              aria-label={done ? "Mark not done" : "Mark done"}
-            >
-              {done && <CheckIcon />}
-            </button>
-            <span
-              className="task-title"
-              onClick={() => onToggle(task.id)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") onToggle(task.id);
-              }}
-            >
-              {task.text}
-            </span>
-            {task.carriedFromPlanId && (
-              <span className="task-carried" title="Moved from yesterday" aria-hidden>
-                ↩
-              </span>
-            )}
-            {onRemove && (
-              <button
-                type="button"
-                className="task-del"
-                onClick={() => onRemove(task.id)}
-                aria-label={`Remove ${task.text}`}
-              >
-                <CloseIcon />
-              </button>
-            )}
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+        <SortableContext items={ids} strategy={verticalListSortingStrategy}>
+          <ul className="tasks">
+            {tasks.map((task) => (
+              <TaskCard key={task.id} task={task} onToggle={onToggle} onOpen={setEditingId} />
+            ))}
+          </ul>
+        </SortableContext>
+      </DndContext>
+
+      {editing && (
+        <TaskEditModal
+          task={editing}
+          onClose={() => setEditingId(null)}
+          onSave={(patch) => {
+            onUpdate(editing.id, patch);
+            setEditingId(null);
+          }}
+          onDelete={() => {
+            onRemove(editing.id);
+            setEditingId(null);
+          }}
+        />
+      )}
+    </>
   );
 }

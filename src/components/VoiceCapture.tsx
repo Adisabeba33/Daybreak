@@ -6,8 +6,8 @@ import { TaskReviewModal } from "./TaskReviewModal";
 import type { TaskPriority } from "../types";
 
 interface Props {
-  /** Add a task (priority optional — the AI path passes an inferred one). */
-  onAdd: (text: string, priority?: TaskPriority) => void;
+  /** Add a task (the AI path passes an inferred priority and time estimate). */
+  onAdd: (text: string, priority?: TaskPriority, estimateMinutes?: number) => void;
   /** How many tasks are already captured — drives the guided prompts. */
   count: number;
 }
@@ -105,7 +105,7 @@ export function VoiceCapture({ onAdd, count }: Props) {
           tasks={review}
           onCancel={() => setReview(null)}
           onConfirm={(tasks) => {
-            tasks.forEach((t) => onAdd(t.text, t.priority));
+            tasks.forEach((t) => onAdd(t.text, t.priority, t.estimateMinutes));
             setReview(null);
           }}
         />

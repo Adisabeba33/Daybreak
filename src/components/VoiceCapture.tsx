@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
-import { useApiKey, parseTasksFromSpeech } from "../lib/ai";
+import { useApiKey, parseTasksFromSpeech, type ParsedTask } from "../lib/ai";
 import { MicIcon } from "./icons";
+import { TaskReviewModal } from "./TaskReviewModal";
 import type { TaskPriority } from "../types";
 
 interface Props {
@@ -13,15 +14,17 @@ interface Props {
 
 /**
  * Voice-first capture.
- * - With an API key: collect the whole spoken brain-dump, then on stop send it
- *   to Claude Haiku 4.5, which returns clean, split, prioritised tasks.
+ * - With an API key: collect the whole spoken brain-dump, send it to Claude
+ *   Haiku 4.5 on stop, then show a review modal ("Did I get this right?").
+ *   Cards are created only after the user confirms.
  * - Without a key: each finalized phrase becomes a card immediately (offline,
- *   zero-cost fallback). If the AI call fails, we fall back to the raw phrases
- *   so nothing spoken is ever lost.
+ *   zero-cost). If the AI call fails, we fall back to the raw phrases so
+ *   nothing spoken is ever lost.
  */
 export function VoiceCapture({ onAdd, count }: Props) {
   const { hasKey } = useApiKey();
   const [processing, setProcessing] = useState(false);
+  const [review, setReview] = useState<ParsedTask[] | null>(null);
   const bufferRef = useRef<string[]>([]);
   const wasListening = useRef(false);
 
@@ -34,7 +37,8 @@ export function VoiceCapture({ onAdd, count }: Props) {
     },
   });
 
-  // When listening stops in AI mode, process the buffered transcript.
+  // When listening stops in AI mode, parse the buffered transcript and open
+  // the review modal (raw phrases as fallback on empty result or error).
   useEffect(() => {
     if (wasListening.current && !listening && hasKey) {
       const phrases = bufferRef.current;
@@ -43,7 +47,7 @@ export function VoiceCapture({ onAdd, count }: Props) {
         setProcessing(true);
         parseTasksFromSpeech(phrases.join(". "))
           .then((tasks) => {
-            if (tasks.length) tasks.forEach((t) => onAdd(t.text, t.priority));
+            if (tasks.length) setReview(tasks);
             else phrases.forEach((p) => onAdd(p));
           })
           .catch(() => phrases.forEach((p) => onAdd(p)))
@@ -78,21 +82,34 @@ export function VoiceCapture({ onAdd, count }: Props) {
   }
 
   return (
-    <div className={panelClass}>
-      <button
-        type="button"
-        className="vp-btn"
-        onClick={listening ? stop : start}
-        aria-pressed={listening}
-        aria-label="Start voice task input"
-        disabled={processing}
-      >
-        {listening && <span className="vp-ring" aria-hidden />}
-        <MicIcon />
-      </button>
-      <span className="vp-dot" aria-hidden />
-      <p className="vp-title">{title}</p>
-      <p className="vp-sub">{sub}</p>
-    </div>
+    <>
+      <div className={panelClass}>
+        <button
+          type="button"
+          className="vp-btn"
+          onClick={listening ? stop : start}
+          aria-pressed={listening}
+          aria-label="Start voice task input"
+          disabled={processing}
+        >
+          {listening && <span className="vp-ring" aria-hidden />}
+          <MicIcon />
+        </button>
+        <span className="vp-dot" aria-hidden />
+        <p className="vp-title">{title}</p>
+        <p className="vp-sub">{sub}</p>
+      </div>
+
+      {review && (
+        <TaskReviewModal
+          tasks={review}
+          onCancel={() => setReview(null)}
+          onConfirm={(tasks) => {
+            tasks.forEach((t) => onAdd(t.text, t.priority));
+            setReview(null);
+          }}
+        />
+      )}
+    </>
   );
 }

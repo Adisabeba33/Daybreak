@@ -185,6 +185,52 @@
   color: var(--text-muted);
 }
 
+/* Review (confirmation) modal */
+.review-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+.review-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.review-row input {
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(90, 70, 55, 0.16);
+  background: #fff;
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--text-primary);
+  outline: none;
+}
+.review-row input:focus {
+  border-color: rgba(233, 151, 77, 0.5);
+  box-shadow: 0 0 0 3px rgba(240, 164, 82, 0.1);
+}
+.review-del {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
 /* Install affordance */
 .install {
   height: 40px;

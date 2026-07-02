@@ -1,47 +1,91 @@
+import { useEffect, useRef, useState } from "react";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
+import { useApiKey, parseTasksFromSpeech } from "../lib/ai";
 import { MicIcon } from "./icons";
+import type { TaskPriority } from "../types";
 
 interface Props {
-  /** Each finalized spoken phrase is added as a task card. */
-  onAdd: (text: string) => void;
+  /** Add a task (priority optional — the AI path passes an inferred one). */
+  onAdd: (text: string, priority?: TaskPriority) => void;
   /** How many tasks are already captured — drives the guided prompts. */
   count: number;
 }
 
 /**
- * Voice-first capture panel. Tap the mic, speak a task — it's captured — then
- * it prompts for the next one. Renders nothing where the browser has no speech
- * recognition, so the text field below stays the fallback.
+ * Voice-first capture.
+ * - With an API key: collect the whole spoken brain-dump, then on stop send it
+ *   to Claude Haiku 4.5, which returns clean, split, prioritised tasks.
+ * - Without a key: each finalized phrase becomes a card immediately (offline,
+ *   zero-cost fallback). If the AI call fails, we fall back to the raw phrases
+ *   so nothing spoken is ever lost.
  */
 export function VoiceCapture({ onAdd, count }: Props) {
+  const { hasKey } = useApiKey();
+  const [processing, setProcessing] = useState(false);
+  const bufferRef = useRef<string[]>([]);
+  const wasListening = useRef(false);
+
   const { supported, listening, interim, start, stop } = useSpeechRecognition({
     lang: typeof navigator !== "undefined" ? navigator.language : "en-US",
     continuous: true,
-    onResult: onAdd,
+    onResult: (phrase) => {
+      if (hasKey) bufferRef.current.push(phrase);
+      else onAdd(phrase);
+    },
   });
+
+  // When listening stops in AI mode, process the buffered transcript.
+  useEffect(() => {
+    if (wasListening.current && !listening && hasKey) {
+      const phrases = bufferRef.current;
+      bufferRef.current = [];
+      if (phrases.length > 0) {
+        setProcessing(true);
+        parseTasksFromSpeech(phrases.join(". "))
+          .then((tasks) => {
+            if (tasks.length) tasks.forEach((t) => onAdd(t.text, t.priority));
+            else phrases.forEach((p) => onAdd(p));
+          })
+          .catch(() => phrases.forEach((p) => onAdd(p)))
+          .finally(() => setProcessing(false));
+      }
+    }
+    wasListening.current = listening;
+  }, [listening, hasKey, onAdd]);
 
   if (!supported) return null;
 
-  const title = listening
-    ? interim || (count > 0 ? "Listening… say your next task" : "Listening…")
-    : count > 0
-      ? "Say your next task"
-      : "Tap and say your first task";
+  const panelClass = processing
+    ? "voice-panel processing"
+    : listening
+      ? "voice-panel listening"
+      : "voice-panel";
 
-  const sub = listening
-    ? "Tap to finish"
-    : count > 0
-      ? `${count} captured — tap to add more`
-      : "Each phrase you say becomes a card";
+  let title: string;
+  let sub: string;
+  if (processing) {
+    title = "Organizing…";
+    sub = "Turning your words into tasks";
+  } else if (listening) {
+    title = interim || (hasKey ? "Listening… talk freely" : "Listening…");
+    sub = hasKey ? "Say everything — tap to finish" : "Tap to finish";
+  } else if (count > 0) {
+    title = hasKey ? "Add more — just talk" : "Say your next task";
+    sub = `${count} captured — tap to add more`;
+  } else {
+    title = hasKey ? "Tap and say your tasks" : "Tap and say your first task";
+    sub = hasKey ? "Talk freely — AI sorts it into cards" : "Each phrase you say becomes a card";
+  }
 
   return (
-    <div className={listening ? "voice-panel listening" : "voice-panel"}>
+    <div className={panelClass}>
       <button
         type="button"
         className="vp-btn"
         onClick={listening ? stop : start}
         aria-pressed={listening}
         aria-label="Start voice task input"
+        disabled={processing}
       >
         {listening && <span className="vp-ring" aria-hidden />}
         <MicIcon />

@@ -12,6 +12,9 @@ export type TaskStatus = "todo" | "doing" | "done";
 /** Coarse priority. `none` is the default so quick entry stays frictionless. */
 export type TaskPriority = "none" | "low" | "medium" | "high";
 
+/** How the task was captured — drives the small "Voice / Typed" card label. */
+export type TaskSource = "voice" | "text";
+
 /**
  * The single knob that turns "plan my day" into "plan my week/month".
  * Day/week/month are NOT three features — they are one feature parameterised
@@ -32,6 +35,8 @@ export interface Task {
   voiceNoteId?: string;
   /** Duration of the attached voice note, in seconds. */
   voiceDurationSec?: number;
+  /** How the task was captured (spoken vs typed). Defaults to typed. */
+  source?: TaskSource;
   /** ISO timestamp of creation. */
   createdAt: string;
   /** ISO timestamp of the last status change to `done`, if any. */

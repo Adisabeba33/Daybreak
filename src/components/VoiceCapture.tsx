@@ -7,7 +7,12 @@ import type { TaskPriority } from "../types";
 
 interface Props {
   /** Add a task (the AI path passes an inferred priority and time estimate). */
-  onAdd: (text: string, priority?: TaskPriority, estimateMinutes?: number) => void;
+  onAdd: (
+    text: string,
+    priority?: TaskPriority,
+    estimateMinutes?: number,
+    source?: "voice" | "text",
+  ) => void;
   /** How many tasks are already captured — drives the guided prompts. */
   count: number;
 }
@@ -33,7 +38,7 @@ export function VoiceCapture({ onAdd, count }: Props) {
     continuous: true,
     onResult: (phrase) => {
       if (hasKey) bufferRef.current.push(phrase);
-      else onAdd(phrase);
+      else onAdd(phrase, "none", undefined, "voice");
     },
   });
 
@@ -48,9 +53,9 @@ export function VoiceCapture({ onAdd, count }: Props) {
         parseTasksFromSpeech(phrases.join(". "))
           .then((tasks) => {
             if (tasks.length) setReview(tasks);
-            else phrases.forEach((p) => onAdd(p));
+            else phrases.forEach((p) => onAdd(p, "none", undefined, "voice"));
           })
-          .catch(() => phrases.forEach((p) => onAdd(p)))
+          .catch(() => phrases.forEach((p) => onAdd(p, "none", undefined, "voice")))
           .finally(() => setProcessing(false));
       }
     }
@@ -68,11 +73,11 @@ export function VoiceCapture({ onAdd, count }: Props) {
   let title: string;
   let sub: string;
   if (processing) {
-    title = "Organizing…";
-    sub = "Turning your words into tasks";
+    title = "Creating your tasks…";
+    sub = "Almost done";
   } else if (listening) {
-    title = interim || (hasKey ? "Listening… talk freely" : "Listening…");
-    sub = hasKey ? "Say everything — tap to finish" : "Tap to finish";
+    title = interim || "Listening…";
+    sub = hasKey ? "Talk freely — tap to finish" : "Say one task at a time";
   } else if (count > 0) {
     title = hasKey ? "Add more — just talk" : "Say your next task";
     sub = `${count} captured — tap to add more`;
@@ -95,7 +100,11 @@ export function VoiceCapture({ onAdd, count }: Props) {
           {listening && <span className="vp-ring" aria-hidden />}
           <MicIcon />
         </button>
-        <span className="vp-dot" aria-hidden />
+        <span className="vp-wave" aria-hidden>
+          <i />
+          <i />
+          <i />
+        </span>
         <p className="vp-title">{title}</p>
         <p className="vp-sub">{sub}</p>
       </div>
@@ -105,7 +114,7 @@ export function VoiceCapture({ onAdd, count }: Props) {
           tasks={review}
           onCancel={() => setReview(null)}
           onConfirm={(tasks) => {
-            tasks.forEach((t) => onAdd(t.text, t.priority, t.estimateMinutes));
+            tasks.forEach((t) => onAdd(t.text, t.priority, t.estimateMinutes, "voice"));
             setReview(null);
           }}
         />

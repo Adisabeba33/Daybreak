@@ -182,11 +182,44 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function CarryIcon(props: SVGProps<SVGSVGElement>) {
+  // "Carried over from yesterday" — a small corner-return arrow (stroked,
+  // never the ↩ glyph which iOS can render emoji-style).
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" {...stroke} strokeWidth={1.8} {...props}>
+      <path d="M9 10 5 14l4 4" />
+      <path d="M5 14h9a5 5 0 0 0 5-5V6" />
+    </svg>
+  );
+}
+
 export function GearIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg width={20} height={20} viewBox="0 0 24 24" {...stroke} {...props}>
       <circle cx="12" cy="12" r="3.2" />
       <path d="M19.4 12.9a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V19a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H5a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H11a1.6 1.6 0 0 0 1-1.5V5a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V11a1.6 1.6 0 0 0 1.5 1H19a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" />
+    </svg>
+  );
+}
+
+export function SunStreakIcon(props: SVGProps<SVGSVGElement>) {
+  // Daybreak's streak mark: a clean stroked flame with a small sun cresting
+  // inside — a sunrise/flame hybrid, in the same rounded line style as the
+  // rest of the icon set (no two-tone emoji look).
+  return (
+    <svg
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M12 2.7c2.4 3 4.4 5 4.4 8.4a4.4 4.4 0 0 1-8.8 0c0-1.6.8-2.9 1.8-3.9C10.6 8 11.7 6.5 12 2.7z" />
+      <path d="M9.5 13a2.5 2.5 0 0 1 5 0" />
     </svg>
   );
 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { AppState, Plan, Task, TaskPriority } from "../types";
+import type { AppState, Plan, Task, TaskPriority, TaskSource } from "../types";
 import { dayKey, previousDayKey } from "../lib/date";
 import {
   carryOverTasks,
@@ -68,12 +68,17 @@ export function usePlan(now: Date = new Date()) {
   );
 
   const addTask = useCallback(
-    (text: string, priority: TaskPriority = "none", estimateMinutes?: number) => {
+    (
+      text: string,
+      priority: TaskPriority = "none",
+      estimateMinutes?: number,
+      source: TaskSource = "text",
+    ) => {
       const trimmed = text.trim();
       if (!trimmed) return;
       mutateToday((tasks) => [
         ...tasks,
-        createTask(trimmed, { priority, estimateMinutes }, now),
+        createTask(trimmed, { priority, estimateMinutes, source }, now),
       ]);
     },
     [mutateToday, now],

@@ -49,7 +49,7 @@ export function InstallButton() {
                 Scroll down and choose <b>Add to Home Screen</b>
               </li>
               <li>
-                Tap <b>Add</b> — the 🌅 icon appears on your Home Screen
+                Tap <b>Add</b> — the Daybreak icon appears on your Home Screen
               </li>
             </ol>
             <p className="tip-note">

@@ -23,8 +23,12 @@ export default function App() {
 
   const streak = effectiveStreak(plan.streak, plan.today);
 
+  // Expose the active tab as a data attribute so the visual mood (Day / Tasks /
+  // Night) can later drive theme tokens without touching component code.
+  const tab = phase === "morning" ? "day" : phase === "day" ? "tasks" : "night";
+
   return (
-    <div className="app">
+    <div className="app" data-tab={tab}>
       <Header streak={streak} />
 
       <main className="content">

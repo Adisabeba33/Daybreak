@@ -7,7 +7,12 @@ import type { Progress, Task } from "../types";
 interface Props {
   tasks: Task[];
   progress: Progress;
-  onAdd: (text: string) => void;
+  onAdd: (
+    text: string,
+    priority?: Task["priority"],
+    estimateMinutes?: number,
+    source?: Task["source"],
+  ) => void;
   onToggle: (id: string) => void;
   onUpdate: (id: string, patch: Partial<Task>) => void;
   onRemove: (id: string) => void;

@@ -2,7 +2,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { Task } from "../types";
 import { PRIORITY_COLOR, formatMinutes } from "../lib/taskFormat";
-import { CheckIcon, ClockIcon, GripIcon } from "./icons";
+import { CheckIcon, ClockIcon, GripIcon, CarryIcon } from "./icons";
 import { AudioPlayer } from "./AudioPlayer";
 
 interface Props {
@@ -31,7 +31,10 @@ export function TaskCard({ task, onToggle, onRequestComplete, onOpen }: Props) {
 
   const done = task.status === "done";
   const time = formatMinutes(task.estimateMinutes);
-  const hasMeta = Boolean(time || task.note || task.voiceNoteId || task.carriedFromPlanId);
+  const sourceLabel = task.source === "voice" ? "Voice" : task.source === "text" ? "Typed" : "";
+  const hasMeta = Boolean(
+    time || task.note || task.voiceNoteId || task.carriedFromPlanId || sourceLabel,
+  );
 
   const open = () => onOpen(task.id);
 
@@ -71,6 +74,7 @@ export function TaskCard({ task, onToggle, onRequestComplete, onOpen }: Props) {
         </span>
         {hasMeta && (
           <span className="task-meta">
+            {sourceLabel && <span className="task-source">{sourceLabel}</span>}
             {task.voiceNoteId && (
               <span className="chip voice-chip">
                 <AudioPlayer
@@ -89,7 +93,7 @@ export function TaskCard({ task, onToggle, onRequestComplete, onOpen }: Props) {
             {task.note && <span className="task-note">{task.note}</span>}
             {task.carriedFromPlanId && (
               <span className="task-carried" title="Moved from yesterday" aria-hidden>
-                ↩
+                <CarryIcon />
               </span>
             )}
           </span>

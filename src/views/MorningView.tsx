@@ -2,11 +2,17 @@ import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import { VoiceCapture } from "../components/VoiceCapture";
 import { EmptyState } from "../components/EmptyState";
+import { CarryIcon } from "../components/icons";
 import type { Task } from "../types";
 
 interface Props {
   tasks: Task[];
-  onAdd: (text: string, priority?: Task["priority"], estimateMinutes?: number) => void;
+  onAdd: (
+    text: string,
+    priority?: Task["priority"],
+    estimateMinutes?: number,
+    source?: Task["source"],
+  ) => void;
   onToggle: (id: string) => void;
   onUpdate: (id: string, patch: Partial<Task>) => void;
   onRemove: (id: string) => void;
@@ -39,7 +45,9 @@ export function MorningView({
       <TaskInput onAdd={onAdd} placeholder="…or type a task" />
 
       {carried > 0 && (
-        <p className="carried-note">↩ {carried} carried over from yesterday</p>
+        <p className="carried-note">
+          <CarryIcon /> {carried} carried over from yesterday
+        </p>
       )}
 
       {tasks.length === 0 ? (

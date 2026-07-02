@@ -23,7 +23,7 @@ function makeId(prefix: string): string {
 
 export function createTask(
   text: string,
-  opts: Partial<Pick<Task, "priority" | "estimateMinutes">> = {},
+  opts: Partial<Pick<Task, "priority" | "estimateMinutes" | "source">> = {},
   now: Date = new Date(),
 ): Task {
   return {
@@ -32,6 +32,7 @@ export function createTask(
     status: "todo",
     priority: opts.priority ?? "none",
     estimateMinutes: opts.estimateMinutes,
+    source: opts.source ?? "text",
     createdAt: now.toISOString(),
   };
 }

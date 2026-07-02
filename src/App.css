@@ -60,7 +60,7 @@
   gap: 8px;
 }
 .streak-pill svg {
-  color: #ef8c3c;
+  color: #d69132;
 }
 .streak-num {
   font-size: 20px;
@@ -440,28 +440,55 @@
     opacity: 0;
   }
 }
-.vp-dot {
-  width: 6px;
+/* Idle listening indicator — a tiny, calm waveform mark under the mic. */
+.vp-wave {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 14px 0 20px;
+  opacity: 0.55;
+  transition: opacity 220ms ease;
+}
+.vp-wave i {
+  display: block;
+  width: 4px;
   height: 6px;
   border-radius: var(--radius-pill);
   background: #e9a13c;
-  opacity: 0.75;
-  margin: 14px 0 20px;
+}
+.vp-wave i:nth-child(2) {
+  height: 11px;
+}
+/* Recording — soft, slow breathing pulse (never bouncy). */
+.voice-panel.listening .vp-wave {
+  animation: vp-wave-pulse 1500ms ease-in-out infinite;
+}
+@keyframes vp-wave-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.06);
+  }
 }
 .voice-panel.processing .vp-btn {
   opacity: 0.6;
   cursor: default;
 }
-.voice-panel.processing .vp-dot {
-  animation: dot-pulse 1000ms ease-in-out infinite;
+/* Processing — gentle shimmer, no aggressive spinner. */
+.voice-panel.processing .vp-wave {
+  animation: vp-wave-shim 1100ms ease-in-out infinite;
 }
-@keyframes dot-pulse {
+@keyframes vp-wave-shim {
   0%,
   100% {
     opacity: 0.3;
   }
   50% {
-    opacity: 0.9;
+    opacity: 0.72;
   }
 }
 .vp-title {
@@ -558,9 +585,16 @@
 
 .carried-note {
   margin: 18px 0 0;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-size: 14px;
   color: var(--text-secondary);
+}
+.carried-note svg {
+  color: var(--text-muted);
+  flex: none;
 }
 
 /* ---------- Empty state ---------- */
@@ -616,11 +650,18 @@
   border-radius: var(--radius-control);
   background: rgba(255, 255, 255, 0.68);
   border: 1px solid rgba(80, 60, 45, 0.1);
-  padding: 12px 12px 12px 16px;
+  padding: 15px 16px;
   display: flex;
   align-items: center;
   gap: 12px;
+  box-shadow:
+    0 8px 18px rgba(90, 60, 40, 0.045),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
   animation: task-in 260ms ease-out both;
+  transition: opacity 200ms ease;
+}
+.task-card.done {
+  opacity: 0.58;
 }
 @keyframes task-in {
   from {
@@ -633,8 +674,8 @@
   }
 }
 .task-check {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   flex: none;
   border-radius: var(--radius-pill);
   border: 1.5px solid rgba(70, 65, 60, 0.28);
@@ -685,7 +726,6 @@
   white-space: nowrap;
 }
 .task-card.done .task-title {
-  opacity: 0.52;
   text-decoration: line-through;
 }
 .task-meta {
@@ -693,6 +733,13 @@
   align-items: center;
   gap: 10px;
   min-width: 0;
+}
+.task-source {
+  flex: none;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
 }
 .chip {
   display: inline-flex;
@@ -715,6 +762,8 @@
 .task-carried {
   color: var(--text-muted);
   flex: none;
+  display: inline-flex;
+  align-items: center;
 }
 .task-grip {
   flex: none;
@@ -1074,7 +1123,8 @@
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .main-card,
-  .task-card {
+  .task-card,
+  .vp-wave {
     animation: none;
   }
   .vp-ring {

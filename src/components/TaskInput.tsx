@@ -2,7 +2,12 @@ import { useState } from "react";
 import { KeyboardIcon, PlusIcon } from "./icons";
 
 interface Props {
-  onAdd: (text: string) => void;
+  onAdd: (
+    text: string,
+    priority?: "none" | "low" | "medium" | "high",
+    estimateMinutes?: number,
+    source?: "voice" | "text",
+  ) => void;
   placeholder?: string;
 }
 
@@ -17,7 +22,7 @@ export function TaskInput({ onAdd, placeholder }: Props) {
   const submit = () => {
     const trimmed = text.trim();
     if (!trimmed) return;
-    onAdd(trimmed);
+    onAdd(trimmed, "none", undefined, "text");
     setText("");
   };
 

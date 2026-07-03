@@ -13,7 +13,7 @@
  *
  * Phase 2 will add a `push` handler here for reminder notifications.
  */
-const CACHE = "daybreak-v2";
+const CACHE = "daybreak-v3";
 
 self.addEventListener("install", () => {
   self.skipWaiting();

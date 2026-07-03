@@ -31,26 +31,46 @@ export function PlusIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 export function BrandIcon(props: SVGProps<SVGSVGElement>) {
+  // Daybreak wordmark's sun rising over dunes — sun + fanned rays + two
+  // layered sand waves, in the warm brand palette. Drawn as SVG so it stays
+  // crisp at any size and sits cleanly on the cream background (no badge box).
   return (
-    <svg width={24} height={24} viewBox="0 0 24 24" {...props}>
+    <svg width={34} height={34} viewBox="0 0 48 48" fill="none" {...props}>
       <defs>
-        <linearGradient id="brand-grad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#FFB66D" />
-          <stop offset="1" stopColor="#FF8D68" />
+        <linearGradient id="db-sun" x1="24" y1="18" x2="24" y2="33.5" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stopColor="#F6D389" />
+          <stop offset="1" stopColor="#E4A44E" />
         </linearGradient>
       </defs>
-      <rect width="24" height="24" rx="6" fill="url(#brand-grad)" />
-      <circle cx="12" cy="12" r="3.4" fill="#fff" />
-      <g stroke="#fff" strokeWidth="1.8" strokeLinecap="round">
-        <line x1="12" y1="4.2" x2="12" y2="6" />
-        <line x1="12" y1="18" x2="12" y2="19.8" />
-        <line x1="4.2" y1="12" x2="6" y2="12" />
-        <line x1="18" y1="12" x2="19.8" y2="12" />
-        <line x1="6.6" y1="6.6" x2="7.9" y2="7.9" />
-        <line x1="16.1" y1="16.1" x2="17.4" y2="17.4" />
-        <line x1="17.4" y1="6.6" x2="16.1" y2="7.9" />
-        <line x1="7.9" y1="16.1" x2="6.6" y2="17.4" />
+      <g stroke="#E1A64F" strokeWidth="1.1" strokeLinecap="round">
+        <line x1="24" y1="14.4" x2="24" y2="8.2" />
+        <line x1="26.98" y1="14.9" x2="28.66" y2="8.9" />
+        <line x1="21.02" y1="14.9" x2="19.34" y2="8.9" />
+        <line x1="29.75" y1="16" x2="32.5" y2="11.5" />
+        <line x1="18.25" y1="16" x2="15.5" y2="11.5" />
+        <line x1="32.13" y1="17.9" x2="36" y2="14.2" />
+        <line x1="15.87" y1="17.9" x2="12" y2="14.2" />
+        <line x1="33.96" y1="20.3" x2="37.4" y2="18.4" />
+        <line x1="14.04" y1="20.3" x2="10.6" y2="18.4" />
+        <line x1="35.1" y1="23" x2="38.9" y2="22.1" />
+        <line x1="12.9" y1="23" x2="9.1" y2="22.1" />
       </g>
+      <circle cx="24" cy="5.5" r="0.95" fill="#E1A64F" />
+      <circle cx="24" cy="26" r="7.3" fill="url(#db-sun)" />
+      <path
+        d="M9.5 30.6C15 27.6 19.5 31 24 30.4C29 29.8 33.5 27.7 38.5 30.7C39.2 34 37 37.2 32 37.6C26 38.1 22 38.1 16 37.6C11 37.2 8.8 34 9.5 30.6Z"
+        fill="#E8C3A2"
+      />
+      <path
+        d="M10.5 33.7C16 31.7 20 34.6 24 34.1C29 33.5 33 31.7 37.6 33.7C38.1 35.6 36.2 37.4 32 37.7C26 38.1 22 38.1 16 37.7C12 37.4 10 35.9 10.5 33.7Z"
+        fill="#D6987F"
+      />
+      <path
+        d="M10.8 32.3C16 30.3 20 33.2 24 32.7C29 32.1 33.4 30.1 38 32.2"
+        stroke="#FBF3E6"
+        strokeWidth="1"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

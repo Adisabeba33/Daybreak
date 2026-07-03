@@ -36,8 +36,7 @@
 .brand-icon {
   display: block;
   flex: none;
-  border-radius: 6px;
-  box-shadow: 0 6px 14px rgba(230, 128, 74, 0.2);
+  margin-left: -3px;
 }
 .brand-name {
   font-family: var(--serif);
@@ -48,7 +47,7 @@
   color: #22201f;
 }
 .brand-date {
-  margin: 0 0 0 34px;
+  margin: 0 0 0 41px;
   font-family: var(--sans);
   font-size: 12px;
   line-height: 16px;

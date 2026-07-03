@@ -16,18 +16,26 @@
 /* ---------- Header ---------- */
 .header {
   display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 24px;
+}
+.header-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 52px;
-  margin-bottom: 26px;
+  gap: 12px;
+  min-height: 44px;
 }
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 0;
 }
 .brand-icon {
   display: block;
+  flex: none;
   border-radius: 6px;
   box-shadow: 0 6px 14px rgba(230, 128, 74, 0.2);
 }
@@ -38,6 +46,13 @@
   font-weight: 400;
   letter-spacing: -0.04em;
   color: #22201f;
+}
+.brand-date {
+  margin: 0 0 0 34px;
+  font-family: var(--sans);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-muted);
 }
 .header-right {
   display: flex;

@@ -2,6 +2,7 @@ import { TaskInput } from "../components/TaskInput";
 import { TaskList } from "../components/TaskList";
 import { VoiceCapture } from "../components/VoiceCapture";
 import { EmptyState } from "../components/EmptyState";
+import { PlanSummary } from "../components/PlanSummary";
 import { CarryIcon } from "../components/icons";
 import type { Task } from "../types";
 
@@ -53,13 +54,16 @@ export function MorningView({
       {tasks.length === 0 ? (
         <EmptyState />
       ) : (
-        <TaskList
-          tasks={tasks}
-          onToggle={onToggle}
-          onUpdate={onUpdate}
-          onRemove={onRemove}
-          onReorder={onReorder}
-        />
+        <>
+          <PlanSummary tasks={tasks} />
+          <TaskList
+            tasks={tasks}
+            onToggle={onToggle}
+            onUpdate={onUpdate}
+            onRemove={onRemove}
+            onReorder={onReorder}
+          />
+        </>
       )}
 
       {tasks.length > 0 && (

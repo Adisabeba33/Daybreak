@@ -182,6 +182,16 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function GlobeIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={15} height={15} viewBox="0 0 24 24" {...stroke} strokeWidth={1.6} {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18" />
+      <path d="M12 3c2.5 2.4 3.9 5.6 3.9 9s-1.4 6.6-3.9 9c-2.5-2.4-3.9-5.6-3.9-9S9.5 5.4 12 3z" />
+    </svg>
+  );
+}
+
 export function CarryIcon(props: SVGProps<SVGSVGElement>) {
   // "Carried over from yesterday" — a small corner-return arrow (stroked,
   // never the ↩ glyph which iOS can render emoji-style).

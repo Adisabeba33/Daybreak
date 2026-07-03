@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useSpeechRecognition } from "../hooks/useSpeechRecognition";
 import { useApiKey, parseTasksFromSpeech, type ParsedTask } from "../lib/ai";
-import { MicIcon } from "./icons";
+import { useVoiceLang, VOICE_LANGS } from "../lib/voiceLang";
+import { MicIcon, GlobeIcon } from "./icons";
 import { TaskReviewModal } from "./TaskReviewModal";
 import type { TaskPriority } from "../types";
 
@@ -28,13 +29,14 @@ interface Props {
  */
 export function VoiceCapture({ onAdd, count }: Props) {
   const { hasKey } = useApiKey();
+  const { lang, setLang } = useVoiceLang();
   const [processing, setProcessing] = useState(false);
   const [review, setReview] = useState<ParsedTask[] | null>(null);
   const bufferRef = useRef<string[]>([]);
   const wasListening = useRef(false);
 
   const { supported, listening, interim, start, stop } = useSpeechRecognition({
-    lang: typeof navigator !== "undefined" ? navigator.language : "en-US",
+    lang,
     continuous: true,
     onResult: (phrase) => {
       if (hasKey) bufferRef.current.push(phrase);
@@ -86,9 +88,30 @@ export function VoiceCapture({ onAdd, count }: Props) {
     sub = hasKey ? "Talk freely — AI sorts it into cards" : "Each phrase you say becomes a card";
   }
 
+  // Make sure the current language always has an option, even if it's a device
+  // locale outside our curated list.
+  const langOptions = VOICE_LANGS.some((l) => l.code === lang)
+    ? VOICE_LANGS
+    : [{ code: lang, label: lang }, ...VOICE_LANGS];
+
   return (
     <>
       <div className={panelClass}>
+        <label className="vp-lang" title="Language I listen in">
+          <GlobeIcon />
+          <select
+            value={lang}
+            onChange={(e) => setLang(e.target.value)}
+            disabled={listening || processing}
+            aria-label="Speech recognition language"
+          >
+            {langOptions.map((l) => (
+              <option key={l.code} value={l.code}>
+                {l.label}
+              </option>
+            ))}
+          </select>
+        </label>
         <button
           type="button"
           className="vp-btn"

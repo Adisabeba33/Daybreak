@@ -1,74 +1,69 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1536" viewBox="0 0 1536 1536" role="img" aria-label="Daybreak logo">
   <defs>
-    <linearGradient id="dGrad" x1="612" y1="400" x2="922" y2="740" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F4A15C"/>
-      <stop offset="0.5" stop-color="#D98A42"/>
-      <stop offset="1" stop-color="#9F5D2D"/>
+    <linearGradient id="dGrad" x1="600" y1="380" x2="945" y2="740" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F0A15C"/>
+      <stop offset="1" stop-color="#C87434"/>
     </linearGradient>
-    <linearGradient id="sunGrad" x1="768" y1="555" x2="768" y2="612" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#F7B36C"/>
+    <linearGradient id="sunGrad" x1="768" y1="562" x2="768" y2="624" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F7B06E"/>
       <stop offset="1" stop-color="#C87532"/>
-    </linearGradient>
-    <linearGradient id="rayGrad" x1="768" y1="490" x2="768" y2="600" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#E7A75A"/>
-      <stop offset="1" stop-color="#D0873C"/>
     </linearGradient>
   </defs>
 
   <!-- ===== Monogram: elegant D with sunrise, rays, horizon waves ===== -->
   <g fill="none" stroke="url(#dGrad)" stroke-linecap="round" stroke-linejoin="round">
     <!-- stem + serifs -->
-    <path d="M628 400 L628 736" stroke-width="5"/>
-    <path d="M604 400 L654 400" stroke-width="4.4"/>
-    <path d="M604 736 L654 736" stroke-width="4.4"/>
-    <!-- bowl -->
-    <path d="M636 400 C812 400 922 476 922 566 C922 672 812 736 664 736" stroke-width="5"/>
+    <path d="M624 373 L624 727" stroke-width="3.4"/>
+    <path d="M599 373 L650 373" stroke-width="3"/>
+    <path d="M599 727 L650 727" stroke-width="3"/>
+    <!-- bowl (fuller, smoother) -->
+    <path d="M634 373 C808 373 942 452 942 550 C942 660 812 727 656 727" stroke-width="3.4"/>
   </g>
 
   <!-- rays -->
-  <g fill="none" stroke="url(#rayGrad)" stroke-width="3.6" stroke-linecap="round">
-    <line x1="768" y1="548" x2="768" y2="490"/>
-    <line x1="784.06" y1="550.1" x2="797.5" y2="499.9"/>
-    <line x1="751.94" y1="550.1" x2="738.5" y2="499.9"/>
-    <line x1="799" y1="556.3" x2="821" y2="518.2"/>
-    <line x1="737" y1="556.3" x2="715" y2="518.2"/>
-    <line x1="811.8" y1="566.2" x2="835.9" y2="542.1"/>
-    <line x1="724.2" y1="566.2" x2="700.1" y2="542.1"/>
-    <line x1="821.7" y1="579" x2="842.5" y2="567"/>
-    <line x1="714.3" y1="579" x2="693.5" y2="567"/>
+  <g fill="none" stroke="#D98A42" stroke-width="2.4" stroke-linecap="round">
+    <line x1="768" y1="556" x2="768" y2="482"/>
+    <line x1="785.1" y1="558.2" x2="802.2" y2="494.5"/>
+    <line x1="750.9" y1="558.2" x2="733.8" y2="494.5"/>
+    <line x1="801" y1="564.8" x2="828" y2="518.1"/>
+    <line x1="735" y1="564.8" x2="708" y2="518.1"/>
+    <line x1="814.7" y1="575.3" x2="842.9" y2="547.1"/>
+    <line x1="721.3" y1="575.3" x2="693.1" y2="547.1"/>
+    <line x1="825.2" y1="589" x2="849.4" y2="575"/>
+    <line x1="710.8" y1="589" x2="686.6" y2="575"/>
   </g>
 
-  <!-- sun (half disc) -->
-  <path d="M713 610 A55 55 0 0 1 823 610 Z" fill="url(#sunGrad)"/>
+  <!-- sun (half disc, bigger + lower) -->
+  <path d="M708 622 A60 60 0 0 1 828 622 Z" fill="url(#sunGrad)"/>
 
-  <!-- horizon waves (in front of sun base) -->
+  <!-- horizon waves — longer, extend slightly beyond the D -->
   <g fill="none" stroke-linecap="round">
-    <path d="M650 616 C700 605 745 625 785 616 C830 606 866 623 898 611" stroke="#B97034" stroke-width="5"/>
-    <path d="M676 641 C720 632 760 648 800 640 C840 633 868 645 888 636" stroke="#D9974D" stroke-width="3.4"/>
-    <path d="M702 662 C740 655 775 665 812 659" stroke="#E2B56F" stroke-width="2.4"/>
+    <path d="M600 624 C670 611 730 634 792 623 C858 611 912 632 956 618" stroke="#B97034" stroke-width="3"/>
+    <path d="M640 650 C700 641 752 656 800 648 C852 640 884 652 912 644" stroke="#D9974D" stroke-width="2.2"/>
+    <path d="M680 672 C724 665 772 675 812 669 C840 665 852 670 862 667" stroke="#E2B56F" stroke-width="1.8"/>
   </g>
 
   <!-- ===== Wordmark ===== -->
-  <text x="768" y="896" text-anchor="middle"
+  <text x="768" y="892" text-anchor="middle"
         font-family="'Cormorant Garamond', 'Playfair Display', Georgia, serif"
-        font-size="120" font-weight="600" letter-spacing="34" fill="#2B241F">DAYBREAK</text>
+        font-size="120" font-weight="500" letter-spacing="35" fill="#302821">DAYBREAK</text>
 
   <!-- ===== Tagline ===== -->
-  <text x="774" y="972" text-anchor="middle"
+  <text x="774" y="966" text-anchor="middle"
         font-family="'Inter', -apple-system, 'Segoe UI', sans-serif"
-        font-size="24" font-weight="500" letter-spacing="12" fill="#D47B3D">A NEW DAY. A BETTER YOU.</text>
+        font-size="24" font-weight="400" letter-spacing="12" fill="#D47B3D">A NEW DAY. A BETTER YOU.</text>
 
   <!-- ===== Divider ===== -->
   <g stroke="#D9974D" stroke-linecap="round" fill="none">
-    <line x1="573" y1="1046" x2="703" y2="1046" stroke-width="2"/>
-    <line x1="833" y1="1046" x2="963" y2="1046" stroke-width="2"/>
-    <g stroke-width="2">
-      <path d="M756 1050 A12 12 0 0 1 780 1050"/>
-      <line x1="768" y1="1035" x2="768" y2="1029"/>
-      <line x1="758.5" y1="1037.5" x2="755.5" y2="1032"/>
-      <line x1="777.5" y1="1037.5" x2="780.5" y2="1032"/>
-      <line x1="751" y1="1043.5" x2="746.5" y2="1040"/>
-      <line x1="785" y1="1043.5" x2="789.5" y2="1040"/>
+    <line x1="575" y1="1040" x2="705" y2="1040" stroke-width="1.6"/>
+    <line x1="831" y1="1040" x2="961" y2="1040" stroke-width="1.6"/>
+    <g stroke-width="1.6">
+      <path d="M757 1044 A11 11 0 0 1 779 1044"/>
+      <line x1="768" y1="1030" x2="768" y2="1024"/>
+      <line x1="759" y1="1032" x2="756" y2="1027"/>
+      <line x1="777" y1="1032" x2="780" y2="1027"/>
+      <line x1="752" y1="1038" x2="747.5" y2="1034.5"/>
+      <line x1="784" y1="1038" x2="788.5" y2="1034.5"/>
     </g>
   </g>
 </svg>

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" role="img" aria-label="Daybreak mark">
+  <defs>
+    <linearGradient id="cop" x1="0" y1="18" x2="0" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E6AB5E"/>
+      <stop offset="1" stop-color="#C57C2B"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#cop)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M37 24 C64 24 80 33 80 48 C80 63 64 72 41 72" stroke-width="2.4"/>
+    <path d="M37 23 L37 73" stroke-width="2.4"/>
+    <path d="M32 23.5 L42 23.5 M32 72.5 L42 72.5" stroke-width="2.16"/>
+    <g stroke-width="1.73">
+      <line x1="50" y1="46" x2="50" y2="34"/>
+      <line x1="54.79" y1="46.84" x2="58.21" y2="37.44"/>
+      <line x1="45.21" y1="46.84" x2="41.79" y2="37.44"/>
+      <line x1="59" y1="49.28" x2="64.14" y2="43.15"/>
+      <line x1="41" y1="49.28" x2="35.86" y2="43.15"/>
+      <line x1="62.12" y1="53" x2="67.32" y2="50"/>
+      <line x1="37.88" y1="53" x2="32.68" y2="50"/>
+    </g>
+  </g>
+  <path d="M39 60 A11 11 0 0 1 61 60 Z" fill="url(#cop)"/>
+  <g fill="none" stroke="url(#cop)" stroke-linecap="round">
+    <path d="M29 61 C40 56.5 46 63 52 61 C59 58.8 66 63 75 59.5" stroke-width="2.04"/>
+    <path d="M35 66 C44 63 50 67 56 65 C62 63 68 66 72 63.8" stroke-width="1.63"/>
+  </g>
+</svg>

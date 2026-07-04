@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600" role="img" aria-label="Daybreak logo">
+  <defs>
+    <linearGradient id="cop" x1="0" y1="60" x2="0" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E6AB5E"/>
+      <stop offset="1" stop-color="#C57C2B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mark: D-monogram with rising sun, rays and wave -->
+  <g transform="translate(105,-46) scale(3.6)">
+    <g fill="none" stroke="url(#cop)" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M37 24 C64 24 80 33 80 48 C80 63 64 72 41 72" stroke-width="2.4"/>
+      <path d="M37 23 L37 73" stroke-width="2.4"/>
+      <path d="M32 23.5 L42 23.5 M32 72.5 L42 72.5" stroke-width="2.16"/>
+      <g stroke-width="1.73">
+        <line x1="50" y1="46" x2="50" y2="34"/>
+        <line x1="54.79" y1="46.84" x2="58.21" y2="37.44"/>
+        <line x1="45.21" y1="46.84" x2="41.79" y2="37.44"/>
+        <line x1="59" y1="49.28" x2="64.14" y2="43.15"/>
+        <line x1="41" y1="49.28" x2="35.86" y2="43.15"/>
+        <line x1="62.12" y1="53" x2="67.32" y2="50"/>
+        <line x1="37.88" y1="53" x2="32.68" y2="50"/>
+      </g>
+    </g>
+    <path d="M39 60 A11 11 0 0 1 61 60 Z" fill="url(#cop)"/>
+    <g fill="none" stroke="url(#cop)" stroke-linecap="round">
+      <path d="M29 61 C40 56.5 46 63 52 61 C59 58.8 66 63 75 59.5" stroke-width="2.04"/>
+      <path d="M35 66 C44 63 50 67 56 65 C62 63 68 66 72 63.8" stroke-width="1.63"/>
+    </g>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="300" y="372" text-anchor="middle"
+        font-family="'Playfair Display', 'Cormorant Garamond', Georgia, serif"
+        font-size="76" font-weight="500" letter-spacing="15" fill="#2A2320">DAYBREAK</text>
+
+  <!-- Tagline -->
+  <text x="303" y="416" text-anchor="middle"
+        font-family="'Inter', -apple-system, sans-serif"
+        font-size="15" font-weight="500" letter-spacing="7" fill="#C57C2B">A NEW DAY. A BETTER YOU.</text>
+
+  <!-- Divider with mini sunrise -->
+  <g stroke="#C57C2B" stroke-linecap="round" fill="none">
+    <line x1="212" y1="452" x2="272" y2="452" stroke-width="1.4"/>
+    <line x1="328" y1="452" x2="388" y2="452" stroke-width="1.4"/>
+    <path d="M292 454 A8 8 0 0 1 308 454" stroke-width="1.4"/>
+    <line x1="300" y1="443" x2="300" y2="438" stroke-width="1.2"/>
+    <line x1="295" y1="444.5" x2="293" y2="440.5" stroke-width="1.2"/>
+    <line x1="305" y1="444.5" x2="307" y2="440.5" stroke-width="1.2"/>
+    <line x1="290" y1="449" x2="286.5" y2="446.5" stroke-width="1.2"/>
+    <line x1="310" y1="449" x2="313.5" y2="446.5" stroke-width="1.2"/>
+  </g>
+</svg>
